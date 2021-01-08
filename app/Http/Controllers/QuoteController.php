@@ -16,9 +16,9 @@ class QuoteController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public static function buildResponse($data, $status_code)
+    public static function buildResponse($data, $statusCode)
     {
-        return response()->json($data, $status_code)
+        return response()->json($data, $statusCode)
                          ->header('Content-Type', 'application/json');
     }
     
@@ -54,9 +54,10 @@ class QuoteController extends Controller
         //
         $newQuote = new Quote;
         $rxedData = $request->all();
-        $newQuote->author = $rxedData["author"];
-        $newQuote->text = $rxedData["text"];
-        // $newQuote->fill($rxedData); // alternativly I can use fill() method
+        // these 2 lines can be written in one line using fill() method
+        // $newQuote->author = $rxedData["author"];
+        // $newQuote->text = $rxedData["text"];
+        $newQuote->fill($rxedData);
 
         $is_saved = $newQuote->save();
 
@@ -65,7 +66,7 @@ class QuoteController extends Controller
             $data = $rxedData;
             $statusCode = 201;
         } else {
-            // somenthing went wrong, creation of new record has failed
+            // something went wrong, creation of new record has failed
             $data = 'No data saved in DB!';
             $statusCode = 500;
         }
@@ -144,7 +145,7 @@ class QuoteController extends Controller
 
                 $data = [];
                 $statusCode = 200;
-            } else {  // update failed
+            } else {  // delete failed
 
                 $data = 'Delete failed';
                 $statusCode = 500;
