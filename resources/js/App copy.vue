@@ -18,9 +18,7 @@
               <v-icon>mdi-home</v-icon>
             </v-list-item-icon>
             <v-list-item-title
-              ><router-link to="/dashboard"
-                >Home</router-link
-              ></v-list-item-title
+              ><router-link to="/">Home</router-link></v-list-item-title
             >
           </v-list-item>
 

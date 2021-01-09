@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>About this app</h1>
+    <h1><v-icon>mdi-information</v-icon>About this app</h1>
     <v-card class="d-flex justify-center flex-column">
       <v-card-title>Purpose</v-card-title>
       <v-card-text>
@@ -21,7 +21,7 @@
       <v-card-title>Technologies</v-card-title>
       <v-card-text>
         <ul>
-          <li>LARAVEL v8.14.0 ?????</li>
+          <li>LARAVEL v8.21.0</li>
           <li>VUE.JS v2.6.12</li>
           <li>VUETIFY v2.4.2</li>
           <li>VUE-ROUTER v3.4.9</li>

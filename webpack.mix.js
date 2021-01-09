@@ -11,13 +11,14 @@ const mix = require("laravel-mix");
  |
  */
 
-mix.js("resources/js/app.js", "public/js") // generate app.js
+mix.js("resources/js/app.js", "public/js")
     .vue({ version: 2 }) // <<<<<<------ important
+    .postCss("resources/css/app.css", "public/css", [
+        require("postcss-import"),
+        require("tailwindcss"),
+        require("autoprefixer")
+    ])
     .sass("resources/scss/app.scss", "public/css", [
         // generate app.css
         //
     ]);
-
-// note: to compile correctly vue files, verify that these npm packages are installed:
-// vue-template-compiler (as a dev dependency)
-// vue-loader (as a dev dependency)

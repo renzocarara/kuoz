@@ -30,7 +30,8 @@ class QuoteController extends Controller
     public function index()
     {
         // read all quotes in DB
-        return Quote::orderBy('created_at', 'DESC')->get();
+        // return Quote::orderBy('created_at', 'DESC')->get();
+        return Quote::orderBy('created_at', 'DESC')->paginate(5);
     }
 
     /**
