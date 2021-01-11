@@ -32,6 +32,13 @@
               ><router-link to="/about">About</router-link></v-list-item-title
             >
           </v-list-item>
+
+          <v-list-item link @click="logout">
+            <v-list-item-icon>
+              <v-icon>mdi-exit-to-app</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Logout</v-list-item-title>
+          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
@@ -62,6 +69,14 @@ export default {
       drawer: false,
       group: null,
     };
+  },
+  methods: {
+    logout() {
+      console.log("Logout");
+      axios.post("/logout").then((response) => {
+        window.location.href = "/";
+      });
+    },
   },
 };
 </script>
