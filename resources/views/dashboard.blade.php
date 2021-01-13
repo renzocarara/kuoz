@@ -19,7 +19,7 @@
 
     <body>
         <div id="app">  
-            <app></app>
+            <app :uid="{{ Auth::user()->id }}"></app>
         </div>
     </body>
 </html>

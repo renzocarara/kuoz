@@ -16,8 +16,13 @@ class CreateQuotesTable extends Migration
         Schema::create('quotes', function (Blueprint $table) {
             $table->id();
             
+            $table->unsignedBigInteger('user_id');
+
+            $table->string('text', 255);
             $table->string('author', 50)->default('Unknown');
-            $table->string('text');
+            // $table->string('category', 50)->nullable();
+
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->timestamps();
         });

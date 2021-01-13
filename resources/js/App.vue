@@ -26,6 +26,17 @@
 
           <v-list-item>
             <v-list-item-icon>
+              <v-icon>mdi-pencil-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title
+              ><router-link to="/manage"
+                >Your Quotes</router-link
+              ></v-list-item-title
+            >
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-icon>
               <v-icon>mdi-information-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
@@ -45,7 +56,7 @@
 
     <v-main>
       <v-container>
-        <router-view />
+        <router-view :uid="uid" />
       </v-container>
     </v-main>
 
@@ -63,6 +74,8 @@ export default {
   components: {
     TheFooter,
   },
+
+  props: ["uid"],
 
   data() {
     return {

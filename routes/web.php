@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// breeze routes
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');

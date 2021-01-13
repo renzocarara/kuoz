@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 //
+use Auth;
 use App\Models\Quote;
+
+// use Illuminate\Support\Facades\Auth;
 
 class QuoteController extends Controller
 {
-    
     /**
      * Build response to be returned
      *
@@ -30,9 +32,45 @@ class QuoteController extends Controller
     public function index()
     {
         // read all quotes in DB
-        // return Quote::orderBy('created_at', 'DESC')->get();
-        return Quote::orderBy('created_at', 'DESC')->paginate(5);
+        return Quote::orderBy('created_at', 'DESC')->get();
+        // return Quote::orderBy('created_at', 'DESC')->paginate(5);
     }
+
+    /**
+     * Display a listing of the resource for the logged user
+     *
+     * @return \Illuminate\Http\Response
+     */
+    // public function index_per_UID($uid)
+    public function index_per_UID($uid)
+    {
+        // if (! Auth::guard('api')->check()) {
+        // if (! Auth::check()) {
+        //     return 'You are unauthenticated';
+        // }
+        // if (! auth()->user()) {
+        //     return 'You are unauthenticated';
+        // }
+        // get user ID
+        $user_id = $uid;
+        // $user_id = Auth::user()->id;
+        // $user_id=auth('web')->user()->id;
+        // $user_id=auth()->user()->id;
+        // $user = auth()->user();
+        // var_dump($user_id);
+        // $user_id=auth('api')->user();
+        // $is_authenticated = Auth::check();
+        // $user_id = Auth::id();
+        // return $this->buildResponse($user_id, 200);
+        // return Auth::id();
+        // dd($user_id);
+
+        // read logged user quotes
+        return Quote::orderBy('created_at', 'DESC')->where('user_id', $uid)->get();
+
+        // return Quote::orderBy('created_at', 'DESC')->get();
+    }
+    //
 
     /**
      * Show the form for creating a new resource.
@@ -55,9 +93,10 @@ class QuoteController extends Controller
         //
         $newQuote = new Quote;
         $rxedData = $request->all();
-        // these 2 lines can be written in one line using fill() method
+        // these 3 lines can be written in one line using fill() method
         // $newQuote->author = $rxedData["author"];
         // $newQuote->text = $rxedData["text"];
+        // $newQuote->user_id = $rxedData["user_id"];
         $newQuote->fill($rxedData);
 
         $is_saved = $newQuote->save();

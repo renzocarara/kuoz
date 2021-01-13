@@ -1,6 +1,12 @@
 <template>
   <div>
-    <h1>All Quotes</h1>
+    <p>
+      ...qui appare un elenco delle quotes che appartengono all'utente loggato.
+      L'utente dovrà poter aggiungere, modificare o cancellare una quote.
+    </p>
+
+    <h1>Your Quotes</h1>
+    <h1>user_id: {{ uid }}</h1>
 
     <div v-if="isLoading">
       <v-progress-circular indeterminate color="deep-red"></v-progress-circular>
@@ -24,7 +30,8 @@
 
 <script>
 export default {
-  name: "MainPage",
+  name: "ManagePage",
+  props: ["uid"],
   data() {
     return {
       quotes: [],
@@ -32,15 +39,16 @@ export default {
     };
   },
   mounted() {
-    console.log("loadQuotes() called...");
-    this.loadQuotes();
+    console.log("loadYourQuotes() called...");
+    this.loadYourQuotes();
   },
   methods: {
-    loadQuotes() {
+    loadYourQuotes() {
       // leggo i dati via api call
       axios({
         method: "GET",
-        url: "/api/quote/quotes",
+        url: "/api/quote/quotes_per_UID/" + this.uid,
+        // url: "/api/quote/quotes_per_UID",
       })
         .then((response) => {
           this.handleSuccess(response);
@@ -55,34 +63,19 @@ export default {
 
     handleSuccess(response) {
       console.log("API CALL SUCCESS");
-      console.log("response.data", response.data);
+      console.log("response.data: ", response.data);
       //
       this.quotes = response.data; // no pagination
       //   this.quotes = response.data.data; // pagination
-
-      // estrarre i dati di paginazione da response.data
-      // current_page: 1
-      // data: Array(3)
-      // first_page_url: "http://localhost:8000/api/quotes?page=1"
-      // from: 1
-      // last_page: 5
-      // last_page_url: "http://localhost:8000/api/quotes?page=5"
-      // links: Array(7)
-      // next_page_url: "http://localhost:8000/api/quotes?page=2"
-      // path: "http://localhost:8000/api/quotes"
-      // per_page: 3
-      // prev_page_url: null
-      // to: 3
-      // total: 15
     },
     handleError(error) {
       console.log("API CALL FAILED");
-      console.log("error", error);
+      console.log("error: ", error);
       alert("API call failed!");
     },
   },
 };
 </script>
 
-<style lang="css" scoped>
+<style>
 </style>
