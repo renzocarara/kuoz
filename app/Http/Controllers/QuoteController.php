@@ -16,7 +16,7 @@ class QuoteController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public static function buildResponse($data, $statusCode)
+    private function buildResponse($data, $statusCode)
     {
         return response()->json($data, $statusCode)
                          ->header('Content-Type', 'application/json');

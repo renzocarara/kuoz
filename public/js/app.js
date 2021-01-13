@@ -1917,9 +1917,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     logout: function logout() {
-      console.log("Logout");
+      console.log("Logout clicked...");
       axios.post("/logout").then(function (response) {
         window.location.href = "/";
+        console.log("Logout completed.");
+      })["catch"](function (error) {
+        console.log("Error trying to logout.");
       });
     }
   }
@@ -20651,8 +20654,8 @@ var render = function() {
           }),
           _vm._v(" "),
           _c("v-toolbar-title", [
-            _vm._v("LavQuotes"),
-            _c("span", { staticClass: "subtitle-2 ml-5" }, [_vm._v("Quotes")])
+            _vm._v("Kuoz"),
+            _c("span", { staticClass: "subtitle-2 ml-5" }, [_vm._v("...")])
           ])
         ],
         1
@@ -20693,7 +20696,7 @@ var render = function() {
                     [
                       _c(
                         "v-list-item-icon",
-                        [_c("v-icon", [_vm._v("mdi-home")])],
+                        [_c("v-icon", [_vm._v("mdi-home-outline")])],
                         1
                       ),
                       _vm._v(" "),
@@ -20701,7 +20704,7 @@ var render = function() {
                         "v-list-item-title",
                         [
                           _c("router-link", { attrs: { to: "/dashboard" } }, [
-                            _vm._v("Home")
+                            _vm._v("Dashboard")
                           ])
                         ],
                         1
@@ -20715,7 +20718,7 @@ var render = function() {
                     [
                       _c(
                         "v-list-item-icon",
-                        [_c("v-icon", [_vm._v("mdi-information")])],
+                        [_c("v-icon", [_vm._v("mdi-information-outline")])],
                         1
                       ),
                       _vm._v(" "),
@@ -20734,7 +20737,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "v-list-item",
-                    { attrs: { link: "" }, on: { click: _vm.logout } },
+                    { on: { click: _vm.logout } },
                     [
                       _c(
                         "v-list-item-icon",
@@ -20916,7 +20919,7 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("h1", { staticClass: "text-center" }, [_vm._v("LavQuotes")]),
+      _c("h1", { staticClass: "text-center" }, [_vm._v("Kuoz")]),
       _vm._v(" "),
       _vm.isLoading
         ? _c(
@@ -82255,7 +82258,7 @@ module.exports = index_cjs;
 /******/ 			return checkDeferredModules();
 /******/ 		}
 /******/ 		
-/******/ 		var chunkLoadingGlobal = self["webpackChunk"] = self["webpackChunk"] || [];
+/******/ 		var chunkLoadingGlobal = self["webpackChunkkuoz"] = self["webpackChunkkuoz"] || [];
 /******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
 /******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
 /******/ 		

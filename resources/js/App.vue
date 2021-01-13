@@ -3,7 +3,7 @@
     <v-app-bar color="blue-grey" dark app>
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
       <v-toolbar-title
-        >LavQuotes<span class="subtitle-2 ml-5">Quotes</span></v-toolbar-title
+        >Kuoz<span class="subtitle-2 ml-5">...</span></v-toolbar-title
       >
     </v-app-bar>
 
@@ -15,25 +15,25 @@
         >
           <v-list-item>
             <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
+              <v-icon>mdi-home-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
               ><router-link to="/dashboard"
-                >Home</router-link
+                >Dashboard</router-link
               ></v-list-item-title
             >
           </v-list-item>
 
           <v-list-item>
             <v-list-item-icon>
-              <v-icon>mdi-information</v-icon>
+              <v-icon>mdi-information-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
               ><router-link to="/about">About</router-link></v-list-item-title
             >
           </v-list-item>
 
-          <v-list-item link @click="logout">
+          <v-list-item @click="logout">
             <v-list-item-icon>
               <v-icon>mdi-exit-to-app</v-icon>
             </v-list-item-icon>
@@ -72,10 +72,16 @@ export default {
   },
   methods: {
     logout() {
-      console.log("Logout");
-      axios.post("/logout").then((response) => {
-        window.location.href = "/";
-      });
+      console.log("Logout clicked...");
+      axios
+        .post("/logout")
+        .then((response) => {
+          window.location.href = "/";
+          console.log("Logout completed.");
+        })
+        .catch((error) => {
+          console.log("Error trying to logout.");
+        });
     },
   },
 };

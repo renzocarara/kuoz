@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>LavQuotes</title>
+        <title>Kuoz</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -35,7 +35,7 @@
                     @endauth
                 </div>
             @endif
-            <h1>Welcome on LavQuotes</h1>
+            <h1>Welcome on Kuoz</h1>
             
             <!-- <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
                 Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
@@ -43,10 +43,3 @@
         </div>
     </body>
 </html>
-
-
-
-  <!-- <div id="app">
-            <app></app>
-        </div>
-        <script src="{{ mix('js/app.js') }}"></script> -->

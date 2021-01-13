@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-center">LavQuotes</h1>
+    <h1 class="text-center">Kuoz</h1>
 
     <div v-if="isLoading">
       <v-progress-circular indeterminate color="deep-red"></v-progress-circular>
