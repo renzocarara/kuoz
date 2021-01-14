@@ -41,34 +41,13 @@ class QuoteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function index_per_UID($uid)
-    public function index_per_UID($uid)
+    public function index_UID($uid)
     {
-        // if (! Auth::guard('api')->check()) {
-        // if (! Auth::check()) {
-        //     return 'You are unauthenticated';
-        // }
-        // if (! auth()->user()) {
-        //     return 'You are unauthenticated';
-        // }
         // get user ID
         $user_id = $uid;
-        // $user_id = Auth::user()->id;
-        // $user_id=auth('web')->user()->id;
-        // $user_id=auth()->user()->id;
-        // $user = auth()->user();
-        // var_dump($user_id);
-        // $user_id=auth('api')->user();
-        // $is_authenticated = Auth::check();
-        // $user_id = Auth::id();
-        // return $this->buildResponse($user_id, 200);
-        // return Auth::id();
-        // dd($user_id);
 
         // read logged user quotes
         return Quote::orderBy('created_at', 'DESC')->where('user_id', $uid)->get();
-
-        // return Quote::orderBy('created_at', 'DESC')->get();
     }
     //
 

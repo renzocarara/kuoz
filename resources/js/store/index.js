@@ -1,10 +1,14 @@
+import axios from "axios";
 import Vue from "vue";
-import Vuex from "vuex";
+import Vuex, { Store } from "vuex";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-    state: {},
+    state: {
+        uid: 0,
+        userQuote: []
+    },
     getters: {
         // getVariabile(state) {
         //     return state.Variabile;
@@ -12,9 +16,9 @@ export default new Vuex.Store({
     },
 
     mutations: {
-        // SET_VARIABILE(state, value) {
-        //     state.variabile = value;
-        // },
+        SET_UID(state, value) {
+            state.uid = value;
+        }
     },
 
     actions: {},

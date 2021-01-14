@@ -18,6 +18,9 @@
         >
         <v-card-text>{{ quote.text }}</v-card-text>
       </v-card>
+      <v-card v-if="quotes.length == 0"
+        ><v-card-text>No quotes found in DB!</v-card-text></v-card
+      >
     </v-container>
   </div>
 </template>
@@ -32,15 +35,16 @@ export default {
     };
   },
   mounted() {
-    console.log("loadQuotes() called...");
+    console.log("MainPage component mounted...");
     this.loadQuotes();
   },
   methods: {
     loadQuotes() {
-      // leggo i dati via api call
+      console.log("loadQuotes() called..");
+      // read data from DB via api call
       axios({
         method: "GET",
-        url: "/api/quote/quotes",
+        url: "/api/kuoz/quotes",
       })
         .then((response) => {
           this.handleSuccess(response);
@@ -57,23 +61,7 @@ export default {
       console.log("API CALL SUCCESS");
       console.log("response.data", response.data);
       //
-      this.quotes = response.data; // no pagination
-      //   this.quotes = response.data.data; // pagination
-
-      // estrarre i dati di paginazione da response.data
-      // current_page: 1
-      // data: Array(3)
-      // first_page_url: "http://localhost:8000/api/quotes?page=1"
-      // from: 1
-      // last_page: 5
-      // last_page_url: "http://localhost:8000/api/quotes?page=5"
-      // links: Array(7)
-      // next_page_url: "http://localhost:8000/api/quotes?page=2"
-      // path: "http://localhost:8000/api/quotes"
-      // per_page: 3
-      // prev_page_url: null
-      // to: 3
-      // total: 15
+      this.quotes = response.data;
     },
     handleError(error) {
       console.log("API CALL FAILED");

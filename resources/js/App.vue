@@ -56,7 +56,7 @@
 
     <v-main>
       <v-container>
-        <router-view :uid="uid" />
+        <router-view />
       </v-container>
     </v-main>
 
@@ -73,6 +73,14 @@ export default {
 
   components: {
     TheFooter,
+  },
+  created() {
+    console.log("APP CREATED: uid from backend: ", this.uid);
+    // save uid in the store
+    this.$store.commit("SET_UID", this.uid);
+  },
+  mounted() {
+    console.log("APP MOUNTED");
   },
 
   props: ["uid"],

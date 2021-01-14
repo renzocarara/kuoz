@@ -20,15 +20,11 @@ use App\Http\Controllers\QuoteController;
 //     return $request->user();
 // });
 
-Route::prefix('/quote')->group(function () {
+Route::prefix('/kuoz')->group(function () {
     //            url        controller            method
     Route::get('/quotes', [QuoteController::class, 'index']); // read all quotes
-    Route::get('/quotes_per_UID/{uid}', [QuoteController::class, 'index_per_UID']); // read user quotes
-    // Route::get('/quotes_per_UID', [QuoteController::class, 'index_per_UID']); // read user quotes
+    Route::post('/quotes/{uid}', [QuoteController::class, 'index_UID']); // read quotes specifically for logged user
     Route::post('/store', [QuoteController::class, 'store']); // create a quote
     Route::put('/update/{id}', [QuoteController::class, 'update']); // update a quote
     Route::delete('/delete/{id}', [QuoteController::class, 'destroy']); // delete a quote
 });
-
-
-// ->middleware(['web'])

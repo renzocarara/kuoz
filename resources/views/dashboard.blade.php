@@ -19,6 +19,7 @@
 
     <body>
         <div id="app">  
+            <!-- pass current logged user to vue front-end -->
             <app :uid="{{ Auth::user()->id }}"></app>
         </div>
     </body>

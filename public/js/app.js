@@ -1920,6 +1920,14 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     TheFooter: _components_TheFooter_vue__WEBPACK_IMPORTED_MODULE_0__.default
   },
+  created: function created() {
+    console.log("APP CREATED: uid from backend: ", this.uid); // save uid in the store
+
+    this.$store.commit("SET_UID", this.uid);
+  },
+  mounted: function mounted() {
+    console.log("APP MOUNTED");
+  },
   props: ["uid"],
   data: function data() {
     return {
@@ -1936,6 +1944,121 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         console.log("Error trying to logout.");
       });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/AddQuote.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/AddQuote.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      text: "",
+      // text of quote
+      author: "",
+      // author of quote
+      validity: false,
+      // check form validity
+      textRules: [function (v) {
+        return v.length <= 255 || "Max 255 characters";
+      }, function (v) {
+        return v.length >= 3 || "Min 3 characters";
+      }],
+      authorRules: [function (v) {
+        return v.length <= 50 || "Max 50 characters";
+      }, function (v) {
+        return v.length >= 2 || "Min 2 characters";
+      }]
+    };
+  },
+  methods: {
+    addQuote: function addQuote() {
+      var _this = this;
+
+      // update the DB
+      axios({
+        method: "POST",
+        url: "/api/kuoz/store",
+        headers: {
+          "content-type": "application/json"
+        },
+        params: {
+          text: this.text,
+          author: this.author,
+          user_id: this.$store.state.uid
+        }
+      }).then(function (response) {
+        _this.handleSuccess(response);
+      })["catch"](function (error) {
+        _this.handleError(error);
+      })["finally"](function () {
+        _this.isLoading = false;
+      }); // clear input fields
+
+      this.text = "";
+      this.author = "";
+    },
+    handleSuccess: function handleSuccess(response) {
+      console.log("addQuote API CALL SUCCESS");
+      console.log("addQuote response.data: ", response.data); // emit an event to let the parent component know that DB has been updated
+
+      this.$emit("emitDbUpdated");
+    },
+    handleError: function handleError(error) {
+      console.log("addQuote API CALL FAILED");
+      console.log("addQuote() error: ", error);
+      alert("API call failed!");
     }
   }
 });
@@ -2061,6 +2184,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "MainPage",
   data: function data() {
@@ -2070,17 +2196,18 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    console.log("loadQuotes() called...");
+    console.log("MainPage component mounted...");
     this.loadQuotes();
   },
   methods: {
     loadQuotes: function loadQuotes() {
       var _this = this;
 
-      // leggo i dati via api call
+      console.log("loadQuotes() called.."); // read data from DB via api call
+
       axios({
         method: "GET",
-        url: "/api/quote/quotes"
+        url: "/api/kuoz/quotes"
       }).then(function (response) {
         _this.handleSuccess(response);
       })["catch"](function (error) {
@@ -2093,22 +2220,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log("API CALL SUCCESS");
       console.log("response.data", response.data); //
 
-      this.quotes = response.data; // no pagination
-      //   this.quotes = response.data.data; // pagination
-      // estrarre i dati di paginazione da response.data
-      // current_page: 1
-      // data: Array(3)
-      // first_page_url: "http://localhost:8000/api/quotes?page=1"
-      // from: 1
-      // last_page: 5
-      // last_page_url: "http://localhost:8000/api/quotes?page=5"
-      // links: Array(7)
-      // next_page_url: "http://localhost:8000/api/quotes?page=2"
-      // path: "http://localhost:8000/api/quotes"
-      // per_page: 3
-      // prev_page_url: null
-      // to: 3
-      // total: 15
+      this.quotes = response.data;
     },
     handleError: function handleError(error) {
       console.log("API CALL FAILED");
@@ -2131,6 +2243,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
+/* harmony import */ var _components_AddQuote__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/AddQuote */ "./resources/js/components/AddQuote.vue");
 //
 //
 //
@@ -2161,9 +2274,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "ManagePage",
-  props: ["uid"],
+  components: {
+    AddQuote: _components_AddQuote__WEBPACK_IMPORTED_MODULE_0__.default
+  },
   data: function data() {
     return {
       quotes: [],
@@ -2171,18 +2294,18 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    console.log("loadYourQuotes() called...");
-    this.loadYourQuotes();
+    console.log("ManagePage component mounted...");
+    this.loadUserQuotes();
   },
   methods: {
-    loadYourQuotes: function loadYourQuotes() {
+    loadUserQuotes: function loadUserQuotes() {
       var _this = this;
 
-      // leggo i dati via api call
-      axios({
-        method: "GET",
-        url: "/api/quote/quotes_per_UID/" + this.uid // url: "/api/quote/quotes_per_UID",
+      console.log("LoadUserQuotes() called..."); // read data from DB via API call
 
+      axios({
+        method: "POST",
+        url: "/api/kuoz/quotes/" + this.$store.state.uid
       }).then(function (response) {
         _this.handleSuccess(response);
       })["catch"](function (error) {
@@ -2192,15 +2315,14 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     handleSuccess: function handleSuccess(response) {
-      console.log("API CALL SUCCESS");
+      console.log("loadUserQuotes API CALL SUCCESS");
       console.log("response.data: ", response.data); //
 
-      this.quotes = response.data; // no pagination
-      //   this.quotes = response.data.data; // pagination
+      this.quotes = response.data;
     },
     handleError: function handleError(error) {
       console.log("API CALL FAILED");
-      console.log("error: ", error);
+      console.log("loadUserQuotes() error: ", error);
       alert("API call failed!");
     }
   }
@@ -2364,21 +2486,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.common.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuex__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.common.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vuex__WEBPACK_IMPORTED_MODULE_2__);
 
 
-vue__WEBPACK_IMPORTED_MODULE_0__.default.use((vuex__WEBPACK_IMPORTED_MODULE_1___default()));
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new (vuex__WEBPACK_IMPORTED_MODULE_1___default().Store)({
-  state: {},
+
+vue__WEBPACK_IMPORTED_MODULE_1__.default.use((vuex__WEBPACK_IMPORTED_MODULE_2___default()));
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new (vuex__WEBPACK_IMPORTED_MODULE_2___default().Store)({
+  state: {
+    uid: 0,
+    userQuote: []
+  },
   getters: {// getVariabile(state) {
     //     return state.Variabile;
     // }
   },
-  mutations: {// SET_VARIABILE(state, value) {
-    //     state.variabile = value;
-    // },
+  mutations: {
+    SET_UID: function SET_UID(state, value) {
+      state.uid = value;
+    }
   },
   actions: {},
   modules: {}
@@ -20463,6 +20592,45 @@ component.options.__file = "resources/js/App.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/AddQuote.vue":
+/*!**********************************************!*\
+  !*** ./resources/js/components/AddQuote.vue ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var _AddQuote_vue_vue_type_template_id_8cdafb74___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AddQuote.vue?vue&type=template&id=8cdafb74& */ "./resources/js/components/AddQuote.vue?vue&type=template&id=8cdafb74&");
+/* harmony import */ var _AddQuote_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AddQuote.vue?vue&type=script&lang=js& */ "./resources/js/components/AddQuote.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _AddQuote_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _AddQuote_vue_vue_type_template_id_8cdafb74___WEBPACK_IMPORTED_MODULE_0__.render,
+  _AddQuote_vue_vue_type_template_id_8cdafb74___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/AddQuote.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/TheFooter.vue":
 /*!***********************************************!*\
   !*** ./resources/js/components/TheFooter.vue ***!
@@ -20637,6 +20805,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/AddQuote.vue?vue&type=script&lang=js&":
+/*!***********************************************************************!*\
+  !*** ./resources/js/components/AddQuote.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AddQuote_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./AddQuote.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/AddQuote.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AddQuote_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/components/TheFooter.vue?vue&type=script&lang=js&":
 /*!************************************************************************!*\
   !*** ./resources/js/components/TheFooter.vue?vue&type=script&lang=js& ***!
@@ -20727,6 +20911,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_template_id_f348271a_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_template_id_f348271a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../node_modules/vue-loader/lib/index.js??vue-loader-options!./App.vue?vue&type=template&id=f348271a&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/App.vue?vue&type=template&id=f348271a&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/AddQuote.vue?vue&type=template&id=8cdafb74&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/AddQuote.vue?vue&type=template&id=8cdafb74& ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddQuote_vue_vue_type_template_id_8cdafb74___WEBPACK_IMPORTED_MODULE_0__.render,
+/* harmony export */   "staticRenderFns": () => /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddQuote_vue_vue_type_template_id_8cdafb74___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddQuote_vue_vue_type_template_id_8cdafb74___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./AddQuote.vue?vue&type=template&id=8cdafb74& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/AddQuote.vue?vue&type=template&id=8cdafb74&");
 
 
 /***/ }),
@@ -20958,15 +21159,128 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c(
-        "v-main",
-        [
-          _c("v-container", [_c("router-view", { attrs: { uid: _vm.uid } })], 1)
-        ],
-        1
-      ),
+      _c("v-main", [_c("v-container", [_c("router-view")], 1)], 1),
       _vm._v(" "),
       _c("the-footer")
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/AddQuote.vue?vue&type=template&id=8cdafb74&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/AddQuote.vue?vue&type=template&id=8cdafb74& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => /* binding */ render,
+/* harmony export */   "staticRenderFns": () => /* binding */ staticRenderFns
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-container",
+    [
+      _c(
+        "v-form",
+        {
+          ref: "form",
+          model: {
+            value: _vm.validity,
+            callback: function($$v) {
+              _vm.validity = $$v
+            },
+            expression: "validity"
+          }
+        },
+        [
+          _c("h3", [_vm._v("Add new Quote")]),
+          _vm._v(" "),
+          _c("v-textarea", {
+            attrs: {
+              label: "Text",
+              placeholder: "Add a new quote here...",
+              id: "text-input",
+              outlined: "",
+              rules: _vm.textRules,
+              counter: "255",
+              rows: "2",
+              color: "",
+              "background-color": ""
+            },
+            on: {
+              keydown: function($event) {
+                if (
+                  !$event.type.indexOf("key") &&
+                  _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                ) {
+                  return null
+                }
+                return _vm.addQuote($event)
+              }
+            },
+            model: {
+              value: _vm.text,
+              callback: function($$v) {
+                _vm.text = $$v
+              },
+              expression: "text"
+            }
+          }),
+          _vm._v(" "),
+          _c("v-text-field", {
+            attrs: {
+              label: "Author",
+              placeholder: "Add the author",
+              id: "author-input",
+              outlined: "",
+              rules: _vm.authorRules,
+              counter: "50",
+              color: "",
+              "background-color": ""
+            },
+            on: {
+              keydown: function($event) {
+                if (
+                  !$event.type.indexOf("key") &&
+                  _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                ) {
+                  return null
+                }
+                return _vm.addQuote($event)
+              }
+            },
+            model: {
+              value: _vm.author,
+              callback: function($$v) {
+                _vm.author = $$v
+              },
+              expression: "author"
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "v-btn",
+            {
+              attrs: { disabled: !_vm.validity, color: "#33C500" },
+              on: { click: _vm.addQuote }
+            },
+            [_vm._v("\n      ADD\n    ")]
+          )
+        ],
+        1
+      )
     ],
     1
   )
@@ -21145,27 +21459,40 @@ var render = function() {
       _c(
         "v-container",
         { staticClass: "d-flex flex-wrap justify-center" },
-        _vm._l(_vm.quotes, function(quote) {
-          return _c(
-            "v-card",
-            {
-              key: quote.id,
-              staticClass: "mx-3 my-3",
-              attrs: { width: "200" }
-            },
-            [
-              _c("v-card-title", [
-                _vm._v(
-                  "id: " + _vm._s(quote.id) + ". author:" + _vm._s(quote.author)
-                )
-              ]),
-              _vm._v(" "),
-              _c("v-card-text", [_vm._v(_vm._s(quote.text))])
-            ],
-            1
-          )
-        }),
-        1
+        [
+          _vm._l(_vm.quotes, function(quote) {
+            return _c(
+              "v-card",
+              {
+                key: quote.id,
+                staticClass: "mx-3 my-3",
+                attrs: { width: "200" }
+              },
+              [
+                _c("v-card-title", [
+                  _vm._v(
+                    "id: " +
+                      _vm._s(quote.id) +
+                      ". author:" +
+                      _vm._s(quote.author)
+                  )
+                ]),
+                _vm._v(" "),
+                _c("v-card-text", [_vm._v(_vm._s(quote.text))])
+              ],
+              1
+            )
+          }),
+          _vm._v(" "),
+          _vm.quotes.length == 0
+            ? _c(
+                "v-card",
+                [_c("v-card-text", [_vm._v("No quotes found in DB!")])],
+                1
+              )
+            : _vm._e()
+        ],
+        2
       )
     ],
     1
@@ -21205,7 +21532,7 @@ var render = function() {
       _vm._v(" "),
       _c("h1", [_vm._v("Your Quotes")]),
       _vm._v(" "),
-      _c("h1", [_vm._v("user_id: " + _vm._s(_vm.uid))]),
+      _c("h1", [_vm._v("user_id: " + _vm._s(this.$store.state.uid))]),
       _vm._v(" "),
       _vm.isLoading
         ? _c(
@@ -21225,28 +21552,47 @@ var render = function() {
       _vm._v(" "),
       _c(
         "v-container",
-        { staticClass: "d-flex flex-wrap justify-center" },
-        _vm._l(_vm.quotes, function(quote) {
-          return _c(
-            "v-card",
-            {
-              key: quote.id,
-              staticClass: "mx-3 my-3",
-              attrs: { width: "200" }
-            },
-            [
-              _c("v-card-title", [
-                _vm._v(
-                  "id: " + _vm._s(quote.id) + ". author:" + _vm._s(quote.author)
-                )
-              ]),
-              _vm._v(" "),
-              _c("v-card-text", [_vm._v(_vm._s(quote.text))])
-            ],
-            1
-          )
-        }),
+        [_c("add-quote", { on: { emitDbUpdated: _vm.loadUserQuotes } })],
         1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-container",
+        { staticClass: "d-flex flex-wrap justify-center" },
+        [
+          _vm._l(_vm.quotes, function(quote) {
+            return _c(
+              "v-card",
+              {
+                key: quote.id,
+                staticClass: "mx-3 my-3",
+                attrs: { width: "200" }
+              },
+              [
+                _c("v-card-title", [
+                  _vm._v(
+                    "id: " +
+                      _vm._s(quote.id) +
+                      ". author:" +
+                      _vm._s(quote.author)
+                  )
+                ]),
+                _vm._v(" "),
+                _c("v-card-text", [_vm._v(_vm._s(quote.text))])
+              ],
+              1
+            )
+          }),
+          _vm._v(" "),
+          _vm.quotes.length == 0
+            ? _c(
+                "v-card",
+                [_c("v-card-text", [_vm._v("No quotes found in DB!")])],
+                1
+              )
+            : _vm._e()
+        ],
+        2
       )
     ],
     1
