@@ -1,32 +1,53 @@
 <template>
   <div>
-    <p>
-      ...qui appare un elenco delle quotes che appartengono all'utente loggato.
-      L'utente dovrà poter aggiungere, modificare o cancellare una quote.
-    </p>
-
-    <h1>Your Quotes</h1>
-    <h1>user_id: {{ this.$store.state.uid }}</h1>
-
+    <h1 class="text-center">Manage Quotes</h1>
+    <h1>uid: {{ this.$store.state.uid }}</h1>
     <div v-if="isLoading">
       <v-progress-circular indeterminate color="deep-red"></v-progress-circular>
       <p class="purple--text">Reading data...</p>
     </div>
+    <!-- emitDbUpdated event: when a DB update occurs then reload data from DB -->
+    <add-quote @emitDbUpdated="loadUserQuotes"></add-quote>
+
     <v-container>
-      <!-- when a DB update occurs then reload data from DB -->
-      <add-quote @emitDbUpdated="loadUserQuotes"></add-quote>
+      <h3>Your current Quotes</h3>
     </v-container>
+
     <v-container class="d-flex flex-wrap justify-center">
       <v-card
-        width="200"
+        width=""
         class="mx-3 my-3"
         v-for="quote in quotes"
         :key="quote.id"
       >
-        <v-card-title
-          >id: {{ quote.id }}. author:{{ quote.author }}</v-card-title
+        <v-card-title class="pb-0"
+          ><strong>&ldquo;{{ quote.text }}&rdquo;</strong></v-card-title
         >
-        <v-card-text>{{ quote.text }}</v-card-text>
+        <v-card-text class="text-right text-h6"
+          >-- {{ quote.author }} &hyphen;&hyphen;</v-card-text
+        >
+
+        <v-btn
+          class="edit-btn mx-2 mb-2"
+          rounded
+          dark
+          small
+          color="blue-grey lighten-4"
+          @click="editQuote"
+        >
+          <v-icon dark> mdi-pencil </v-icon>
+        </v-btn>
+
+        <v-btn
+          class="delete-btn mx-2 mb-2"
+          rounded
+          dark
+          small
+          color="blue-grey lighten-4"
+          @click="deleteQuote(quote.id)"
+        >
+          <v-icon dark> mdi-trash-can-outline </v-icon>
+        </v-btn>
       </v-card>
       <v-card v-if="quotes.length == 0"
         ><v-card-text>No quotes found in DB!</v-card-text></v-card
@@ -61,7 +82,10 @@ export default {
         url: "/api/kuoz/quotes/" + this.$store.state.uid,
       })
         .then((response) => {
-          this.handleSuccess(response);
+          console.log("loadUserQuotes API CALL SUCCESS");
+          console.log("loadUserQuotes() response.data: ", response.data);
+          // save received data in local variable
+          this.quotes = response.data;
         })
         .catch((error) => {
           this.handleError(error);
@@ -71,20 +95,48 @@ export default {
         });
     },
 
-    handleSuccess(response) {
-      console.log("loadUserQuotes API CALL SUCCESS");
-      console.log("response.data: ", response.data);
-      //
-      this.quotes = response.data;
+    deleteQuote(id) {
+      console.log("deleteQuotes called..");
+      console.log("id: ", id);
+      // delete data via API call
+      axios({
+        method: "DELETE",
+        url: "/api/kuoz/delete/" + id,
+      })
+        .then((response) => {
+          //  reload data after deletion
+          this.loadUserQuotes();
+          //   emit an event to advice the deletion has completed successfully
+          this.$emit("emitQuoteDeleted");
+        })
+        .catch((error) => {
+          this.handleError(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
+    editQuote() {
+      console.log("editQuotes called..");
+    },
+
     handleError(error) {
       console.log("API CALL FAILED");
-      console.log("loadUserQuotes() error: ", error);
+      console.log("error: ", error);
       alert("API call failed!");
     },
   },
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.v-btn i:hover {
+  transform: scale(1.2);
+}
+.delete-btn:hover {
+  color: red;
+}
+.edit-btn:hover {
+  color: blue;
+}
 </style>

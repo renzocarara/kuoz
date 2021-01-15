@@ -11,14 +11,21 @@ const mix = require("laravel-mix");
  |
  */
 
+// copy Vuetify Style from node_modules to public folder
+mix.copy(
+    "node_modules/vuetify/dist/vuetify.min.css",
+    "public/css/vuetify.min.css"
+);
+
 mix.js("resources/js/app.js", "public/js")
     .vue({ version: 2 }) // <<<<<<------ important
     .postCss("resources/css/app.css", "public/css/", [
+        // generate app.css
         require("postcss-import"),
         require("tailwindcss"),
         require("autoprefixer")
     ])
-    .sass("resources/scss/app.scss", "public/css", [
-        // generate app.css
+    .sass("resources/scss/app.scss", "public/css/my.css", [
+        // generate my.css
         //
     ]);

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>All Quotes</h1>
+    <h1 class="text-center">All Quotes</h1>
 
     <div v-if="isLoading">
       <v-progress-circular indeterminate color="deep-red"></v-progress-circular>
@@ -8,15 +8,17 @@
     </div>
     <v-container class="d-flex flex-wrap justify-center">
       <v-card
-        width="200"
+        width="240"
         class="mx-3 my-3"
         v-for="quote in quotes"
         :key="quote.id"
       >
-        <v-card-title
-          >id: {{ quote.id }}. author:{{ quote.author }}</v-card-title
+        <v-card-title class="pb-0"
+          ><strong>&ldquo;{{ quote.text }}&rdquo;</strong></v-card-title
         >
-        <v-card-text>{{ quote.text }}</v-card-text>
+        <v-card-text class="text-right text-h6"
+          >-- {{ quote.author }} &hyphen;&hyphen;</v-card-text
+        >
       </v-card>
       <v-card v-if="quotes.length == 0"
         ><v-card-text>No quotes found in DB!</v-card-text></v-card

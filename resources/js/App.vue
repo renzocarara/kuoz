@@ -29,9 +29,7 @@
               <v-icon>mdi-pencil-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
-              ><router-link to="/manage"
-                >Your Quotes</router-link
-              ></v-list-item-title
+              ><router-link to="/manage">Manage</router-link></v-list-item-title
             >
           </v-list-item>
 

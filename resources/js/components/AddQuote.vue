@@ -2,38 +2,45 @@
   <v-container>
     <v-form v-model="validity" ref="form">
       <h3>Add new Quote</h3>
+      <v-card width="" class="mx-3 my-3">
+        <v-card-text>
+          <v-textarea
+            placeholder="Add a new quote here..."
+            id="text-input"
+            v-model="text"
+            outlined
+            rows="2"
+            :rules="textRules"
+            counter="255"
+            color=""
+            background-color=""
+          ></v-textarea>
 
-      <v-textarea
-        label="Text"
-        placeholder="Add a new quote here..."
-        id="text-input"
-        v-model="text"
-        outlined
-        :rules="textRules"
-        counter="255"
-        rows="2"
-        color=""
-        background-color=""
-        @keydown.enter="addQuote"
-      ></v-textarea>
+          <v-text-field
+            placeholder="Add the author"
+            id="author-input"
+            v-model="author"
+            outlined
+            :rules="authorRules"
+            counter="50"
+            color=""
+            background-color=""
+            @keydown.enter.prevent="addQuote"
+          >
+          </v-text-field>
 
-      <v-text-field
-        label="Author"
-        placeholder="Add the author"
-        id="author-input"
-        v-model="author"
-        outlined
-        :rules="authorRules"
-        counter="50"
-        color=""
-        background-color=""
-        @keydown.enter="addQuote"
-      >
-      </v-text-field>
-
-      <v-btn class="" :disabled="!validity" color="#33C500" @click="addQuote">
-        ADD
-      </v-btn>
+          <v-btn
+            class="white--text"
+            small
+            rounded
+            :disabled="!validity"
+            color="blue-grey"
+            @click="addQuote"
+          >
+            ADD
+          </v-btn>
+        </v-card-text>
+      </v-card>
     </v-form>
   </v-container>
 </template>
@@ -46,39 +53,41 @@ export default {
 
     validity: false, // check form validity
     textRules: [
-      (v) => v.length <= 255 || "Max 255 characters",
-      (v) => v.length >= 3 || "Min 3 characters",
+      (v) => v.trim().length <= 255 || "Max 255 characters",
+      (v) => v.trim().length >= 3 || "Min 3 characters",
     ],
     authorRules: [
-      (v) => v.length <= 50 || "Max 50 characters",
-      (v) => v.length >= 2 || "Min 2 characters",
+      (v) => v.trim().length <= 50 || "Max 50 characters",
+      (v) => v.trim().length >= 2 || "Min 2 characters",
     ],
   }),
 
   methods: {
     addQuote() {
-      // update the DB
-      axios({
-        method: "POST",
-        url: "/api/kuoz/store",
-        headers: {
-          "content-type": "application/json",
-        },
-        params: {
-          text: this.text,
-          author: this.author,
-          user_id: this.$store.state.uid,
-        },
-      })
-        .then((response) => {
-          this.handleSuccess(response);
+      if (this.text.trim() !== "" && this.author.trim() !== "") {
+        // update the DB
+        axios({
+          method: "POST",
+          url: "/api/kuoz/store",
+          headers: {
+            "content-type": "application/json",
+          },
+          params: {
+            text: this.text,
+            author: this.author,
+            user_id: this.$store.state.uid,
+          },
         })
-        .catch((error) => {
-          this.handleError(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
+          .then((response) => {
+            this.handleSuccess(response);
+          })
+          .catch((error) => {
+            this.handleError(error);
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      }
 
       // clear input fields
       this.text = "";

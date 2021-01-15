@@ -8,13 +8,21 @@
         <title>{{ config('app.name', 'Kuoz') }}</title>
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <!-- Vuetify style -->
+        <link rel="stylesheet" href="{{ asset('css/vuetify.min.css') }}">
+        <!-- my personal style -->
+        <link rel="stylesheet" href="{{ asset('css/my.css') }}">
+
+        <!-- this css file contains Tailwind style, do not include it because it conflicts with vuetify style -->
+        <!-- Tailwind style is necessary only for all the "auth" views (login, register, etc) -->
+        <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> -->
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
+
     </head>
 
     <body>
