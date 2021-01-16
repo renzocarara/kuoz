@@ -2008,10 +2008,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      progressMessage: "",
+      inProgress: false,
+      // flag for progress circle
       text: "",
       // text of quote
       author: "",
@@ -2034,12 +2047,16 @@ __webpack_require__.r(__webpack_exports__);
     addQuote: function addQuote() {
       var _this = this;
 
+      // DESCRIPTION:
+      // check input and, if OK, write data in DB via axios API call
       // remove unwanted blanks, trim blanks and replace multiple blank sequences with only one blank
       var text = this.text.trim().replace(/  +/g, " ");
       var author = this.author.trim().replace(/  +/g, " ");
 
       if (text.length >= _const_js__WEBPACK_IMPORTED_MODULE_0__.TEXT_MIN_CHARS && text.length <= _const_js__WEBPACK_IMPORTED_MODULE_0__.TEXT_MAX_CHARS && author.length >= _const_js__WEBPACK_IMPORTED_MODULE_0__.AUTHOR_MIN_CHARS && author.length <= _const_js__WEBPACK_IMPORTED_MODULE_0__.AUTHOR_MAX_CHARS) {
-        // update the DB
+        this.inProgress = true;
+        this.progressMessage = "Writing data..."; // update the DB
+
         axios({
           method: "POST",
           url: "/api/kuoz/store",
@@ -2056,7 +2073,7 @@ __webpack_require__.r(__webpack_exports__);
         })["catch"](function (error) {
           _this.handleError(error);
         })["finally"](function () {
-          _this.isLoading = false;
+          _this.inProgress = false;
         });
       } // clear input fields
 
@@ -2202,12 +2219,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "MainPage",
   data: function data() {
     return {
       quotes: [],
-      isLoading: true
+      isLoading: false,
+      noDataInDB: false
     };
   },
   mounted: function mounted() {
@@ -2218,7 +2242,10 @@ __webpack_require__.r(__webpack_exports__);
     loadQuotes: function loadQuotes() {
       var _this = this;
 
-      console.log("loadQuotes() called.."); // read data from DB via api call
+      // DESCRIPTION:
+      // read the data (all the quotes) from DB via axios API call
+      console.log("loadQuotes() called..");
+      this.isLoading = true; // read data from DB via api call
 
       axios({
         method: "GET",
@@ -2236,6 +2263,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log("response.data", response.data); //
 
       this.quotes = response.data;
+      this.noDataInDB = !this.quotes.length;
     },
     handleError: function handleError(error) {
       console.log("API CALL FAILED");
@@ -2343,6 +2371,37 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2354,7 +2413,10 @@ __webpack_require__.r(__webpack_exports__);
     return {
       quotes: [],
       // quotes read from DB
-      isLoading: true,
+      noDataInDB: false,
+      // true if DB reading returns no data
+      progressMessage: "",
+      inProgress: false,
       // flag for progress circle
       quoteId: null,
       // id of quote to be edited
@@ -2364,7 +2426,11 @@ __webpack_require__.r(__webpack_exports__);
       // quote author to be edited
       index: 0,
       // index of the quote to be edited (the element in quotes[] array)
-      validity: false,
+      fieldType: "",
+      // type of field beeing edited ("author" or "text")
+      text_validity: false,
+      // check validity
+      author_validity: false,
       // check validity
       textRules: [function (v) {
         return v.trim().length <= _const_js__WEBPACK_IMPORTED_MODULE_1__.TEXT_MAX_CHARS || "Max 255 characters";
@@ -2386,7 +2452,12 @@ __webpack_require__.r(__webpack_exports__);
     loadUserQuotes: function loadUserQuotes() {
       var _this = this;
 
-      console.log("LoadUserQuotes() called..."); // read data from DB via API call
+      // DESCRIPTION:
+      // read the data from DB via axios API call
+      // only the data associated to the logged user are read from DB
+      console.log("LoadUserQuotes() called...");
+      this.inProgress = true;
+      this.progressMessage = "Reading data..."; // read data from DB via API call
 
       axios({
         method: "POST",
@@ -2396,18 +2467,23 @@ __webpack_require__.r(__webpack_exports__);
         console.log("loadUserQuotes() response.data: ", response.data); // save received data in local variable
 
         _this.quotes = response.data;
+        _this.noDataInDB = !_this.quotes.length;
       })["catch"](function (error) {
         _this.handleError(error);
       })["finally"](function () {
-        _this.isLoading = false;
+        _this.inProgress = false;
       });
     },
     deleteQuote: function deleteQuote(id) {
       var _this2 = this;
 
+      // DESCRIPTION:
+      // allow the deletion of a quote
       // this method receives the id of the quote to be deleted
       console.log("deleteQuotes called..");
-      console.log("id: ", id); // delete data via API call
+      console.log("id: ", id);
+      this.inProgress = true;
+      this.progressMessage = "Deleting data..."; // delete data via API call
 
       axios({
         method: "DELETE",
@@ -2418,41 +2494,51 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         _this2.handleError(error);
       })["finally"](function () {
-        _this2.isLoading = false;
+        _this2.inProgress = false;
       });
     },
-    editQuoteText: function editQuoteText(index) {
+    editQuote: function editQuote(index, fieldType) {
       var _this3 = this;
 
-      console.log("editQuoteText called..");
-      console.log("quoteId", this.quotes[index].id); // DESCRIPTION:
-      // show a textarea to allow the user to modify the quote
-      // make the textarea appear and the span disappear
+      // DESCRIPTION:
+      // show an input field (v-text-field or v-textarea) instead of a span
+      // to allow the user to modify data
+      console.log("editQuote called..");
+      console.log("quoteId", this.quotes[index].id); // make the textarea appear and the span disappear
 
       this.quoteId = this.quotes[index].id;
+      this.fieldType = fieldType; // type of field selected for edit ("text" or "author")
+
       this.index = index; // index of the element being edited
       // copy the current values of span element before start edit the input element
 
       this.quoteText = this.quotes[index].text;
-      this.quoteAuthor = this.quotes[index].author; // NOTA: qui ancora il v-text-field non è stato renderizzato, per cui per settare il focus devo aspettare
-      // che  l'elemento esista nel DOM, quindi uso la "nextTick()" che aspetta il prossimo aggiornamento del DOM
+      this.quoteAuthor = this.quotes[index].author; // NOTA: at this moment v-text input is not yet rendered, so to set focus on it I need to wait
+      // when the element actually exists in the DOM, so I use the "nextTick()" that listen for the next update of DOM
       // NOTE:
-      // setto il focus sul v-text-field del task da editare
-      // console.log("this.$refs", this.$refs); // elenco degli elementi che hanno un attributo "ref" associato
-      // console.log("this.$refs.quoteEdit[0]", this.$refs.quoteEdit[0]);
-      // il ref "textEdit" è un array (perchè definito in un loop v-for), per cui per accederci devo usare la
-      // square notation, con indice "0", l'array avrà sempre 1 solo elemento, perchè renderizzo l'elemento
-      // che ha ref="quoteEdit" quando entro nel v-else, e ciò accade solo 1 volta all'interno di tutto il loop v-for
+      // the ref in this case is an array (because it is defined in a v-for loop), so to access it I use the
+      // square notation, with "0" index, the array will have always only 1 element, because I render the element
+      // having the ref attribute when I enter the v-else branch, this happens only 1 time during all the v-for loop
+      // console.log("this.$refs", this.$refs); // list of elements with a ref attribute
+      // console.log("this.$refs.quoteText[0]", this.$refs.quoteText[0]);
+      // set focus on the input field to be edited
 
-      this.$nextTick(function () {
-        _this3.$refs.quoteEdit[0].focus();
-      });
+      if (fieldType == "text") {
+        this.$nextTick(function () {
+          _this3.$refs.quoteText[0].focus();
+        });
+      } else {
+        // fieldType="author"
+        this.$nextTick(function () {
+          _this3.$refs.quoteAuthor[0].focus();
+        });
+      }
     },
     updateQuote: function updateQuote() {
       var _this4 = this;
 
       // DESCRIPTION:
-      // it is called in three different cases while the user is editing the text or the author:
+      // it is called in three different cases while the user is editing a field:
       // user presses ENTER, user clicks floppy icon or the input field looses focus
       // take the modified data, makes some validity checks and, if ok,
       // update the DB via an axios API call
@@ -2464,7 +2550,9 @@ __webpack_require__.r(__webpack_exports__);
       var author = this.quoteAuthor.trim().replace(/  +/g, " ");
 
       if (text.length >= _const_js__WEBPACK_IMPORTED_MODULE_1__.TEXT_MIN_CHARS && text.length <= _const_js__WEBPACK_IMPORTED_MODULE_1__.TEXT_MAX_CHARS && author.length >= _const_js__WEBPACK_IMPORTED_MODULE_1__.AUTHOR_MIN_CHARS && author.length <= _const_js__WEBPACK_IMPORTED_MODULE_1__.AUTHOR_MAX_CHARS) {
-        // update DB
+        this.inProgress = true;
+        this.progressMessage = "Updating data..."; // update DB
+
         axios({
           method: "PUT",
           url: "/api/kuoz/update/" + this.quoteId,
@@ -2476,12 +2564,12 @@ __webpack_require__.r(__webpack_exports__);
             author: author
           }
         }).then(function (response) {
-          //  reload data after update
+          //  reload data after update, to show user the last data changes
           _this4.loadUserQuotes();
         })["catch"](function (error) {
           _this4.handleError(error);
         })["finally"](function () {
-          _this4.isLoading = false;
+          _this4.inProgress = false;
         }); // set the span with modified text before to make it appears again
 
         this.quotes[this.index].text = text;
@@ -21313,7 +21401,7 @@ var render = function() {
           _vm._v(" "),
           _c("v-toolbar-title", [
             _vm._v("Kuoz"),
-            _c("span", { staticClass: "subtitle-2 ml-5" }, [_vm._v("...")])
+            _c("span", { staticClass: "subtitle-2 ml-5" })
           ])
         ],
         1
@@ -21472,6 +21560,27 @@ var render = function() {
   return _c(
     "v-container",
     [
+      _vm.inProgress
+        ? _c(
+            "div",
+            [
+              _c("v-progress-circular", {
+                attrs: {
+                  indeterminate: "",
+                  size: "50",
+                  width: "8",
+                  color: "red"
+                }
+              }),
+              _vm._v(" "),
+              _c("p", { staticClass: "red--text text-h6" }, [
+                _vm._v(_vm._s(_vm.progressMessage))
+              ])
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
       _c(
         "v-form",
         {
@@ -21485,7 +21594,7 @@ var render = function() {
           }
         },
         [
-          _c("h3", [_vm._v("Add new Quote")]),
+          _c("h3", { staticClass: "text-center" }, [_vm._v("Add new Quote")]),
           _vm._v(" "),
           _c(
             "v-card",
@@ -21660,11 +21769,7 @@ var render = function() {
   return _c(
     "div",
     [
-      _c(
-        "h1",
-        [_c("v-icon", [_vm._v("mdi-information")]), _vm._v("About this app")],
-        1
-      ),
+      _c("h1", { staticClass: "text-center" }, [_vm._v("About this app")]),
       _vm._v(" "),
       _c(
         "v-card",
@@ -21680,18 +21785,7 @@ var render = function() {
           _vm._v(" "),
           _c("v-card-title", [_vm._v("How it works")]),
           _vm._v(" "),
-          _c("v-card-text", [_vm._v(" blah blah ")]),
-          _vm._v(" "),
-          _c("v-img", {
-            staticClass: "my-2",
-            attrs: {
-              alt: "lavu flowchart",
-              "max-width": "420",
-              src: "assets/to_be_defined_flowchart.png"
-            }
-          }),
-          _vm._v(" "),
-          _c("v-card-text", [_vm._v(" blah blah ")]),
+          _c("v-card-text", [_vm._v(" TBD ")]),
           _vm._v(" "),
           _c("v-card-title", [_vm._v("Technologies")]),
           _vm._v(" "),
@@ -21744,12 +21838,19 @@ var render = function() {
       _vm.isLoading
         ? _c(
             "div",
+            { staticClass: "view-centered" },
             [
               _c("v-progress-circular", {
-                attrs: { indeterminate: "", color: "deep-red" }
+                staticClass: "ml-7",
+                attrs: {
+                  indeterminate: "",
+                  size: "50",
+                  width: "8",
+                  color: "red"
+                }
               }),
               _vm._v(" "),
-              _c("p", { staticClass: "purple--text" }, [
+              _c("p", { staticClass: "red--text text-h6" }, [
                 _vm._v("Reading data...")
               ])
             ],
@@ -21771,13 +21872,15 @@ var render = function() {
                 attrs: { width: "240" }
               },
               [
-                _c("v-card-title", { staticClass: "pb-0" }, [
+                _c("v-card-title", { staticClass: "pb-0 word-break-normal" }, [
                   _c("strong", [_vm._v("“" + _vm._s(quote.text) + "”")])
                 ]),
                 _vm._v(" "),
                 _c(
                   "v-card-text",
-                  { staticClass: "text-right text-subtitle-1" },
+                  {
+                    staticClass: "text-right text-subtitle-1 word-break-normal"
+                  },
                   [_vm._v("-- " + _vm._s(quote.author) + " ‐‐")]
                 )
               ],
@@ -21785,7 +21888,7 @@ var render = function() {
             )
           }),
           _vm._v(" "),
-          _vm.quotes.length == 0
+          _vm.noDataInDB
             ? _c(
                 "v-card",
                 [_c("v-card-text", [_vm._v("No quotes found in DB!")])],
@@ -21827,18 +21930,22 @@ var render = function() {
     [
       _c("h1", { staticClass: "text-center" }, [_vm._v("Manage Quotes")]),
       _vm._v(" "),
-      _c("h1", [_vm._v("uid: " + _vm._s(this.$store.state.uid))]),
-      _vm._v(" "),
-      _vm.isLoading
+      _vm.inProgress
         ? _c(
             "div",
+            { staticClass: "view-centered" },
             [
               _c("v-progress-circular", {
-                attrs: { indeterminate: "", color: "deep-red" }
+                attrs: {
+                  indeterminate: "",
+                  size: "50",
+                  width: "8",
+                  color: "red"
+                }
               }),
               _vm._v(" "),
-              _c("p", { staticClass: "purple--text" }, [
-                _vm._v("Reading data...")
+              _c("p", { staticClass: "red--text text-h6" }, [
+                _vm._v(_vm._s(_vm.progressMessage))
               ])
             ],
             1
@@ -21847,11 +21954,15 @@ var render = function() {
       _vm._v(" "),
       _c("add-quote", { on: { emitDbUpdated: _vm.loadUserQuotes } }),
       _vm._v(" "),
-      _c("v-container", [_c("h3", [_vm._v("Your current Quotes")])]),
+      _c("v-container", [
+        _c("h3", { staticClass: "text-center" }, [
+          _vm._v("Your current Quotes")
+        ])
+      ]),
       _vm._v(" "),
       _c(
         "v-container",
-        { staticClass: "d-flex flex-wrap justify-center" },
+        { staticClass: "d-flex flex-wrap justify-center pt-0" },
         [
           _vm._l(_vm.quotes, function(quote, index) {
             return _c(
@@ -21860,15 +21971,18 @@ var render = function() {
               [
                 _c(
                   "v-card-title",
-                  { staticClass: "pb-0" },
+                  { staticClass: "pb-0 word-break-normal" },
                   [
-                    _vm.quoteId == null || quote.id != _vm.quoteId
+                    _vm.quoteId == null ||
+                    quote.id != _vm.quoteId ||
+                    _vm.fieldType != "text"
                       ? _c(
                           "span",
                           {
+                            staticClass: "cursor-pointer",
                             on: {
                               click: function($event) {
-                                return _vm.editQuoteText(index)
+                                return _vm.editQuote(index, "text")
                               }
                             }
                           },
@@ -21882,16 +21996,16 @@ var render = function() {
                           "v-form",
                           {
                             model: {
-                              value: _vm.validity,
+                              value: _vm.text_validity,
                               callback: function($$v) {
-                                _vm.validity = $$v
+                                _vm.text_validity = $$v
                               },
-                              expression: "validity"
+                              expression: "text_validity"
                             }
                           },
                           [
                             _c("v-textarea", {
-                              ref: "quoteEdit",
+                              ref: "quoteText",
                               refInFor: true,
                               attrs: {
                                 dense: "",
@@ -21928,7 +22042,7 @@ var render = function() {
                                             attrs: {
                                               color: "green",
                                               large: "",
-                                              disabled: !_vm.validity
+                                              disabled: !_vm.text_validity
                                             },
                                             on: { click: _vm.updateQuote }
                                           },
@@ -21959,20 +22073,109 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "v-card-text",
-                  { staticClass: "text-right text-subtitle-1" },
-                  [_vm._v("-- " + _vm._s(quote.author) + " --")]
+                  {
+                    staticClass: "text-right text-subtitle-1 word-break-normal"
+                  },
+                  [
+                    _vm.quoteId == null ||
+                    quote.id != _vm.quoteId ||
+                    _vm.fieldType != "author"
+                      ? _c(
+                          "span",
+                          {
+                            staticClass: "cursor-pointer",
+                            on: {
+                              click: function($event) {
+                                return _vm.editQuote(index, "author")
+                              }
+                            }
+                          },
+                          [_vm._v("-- " + _vm._s(quote.author) + " --")]
+                        )
+                      : _c(
+                          "v-form",
+                          {
+                            model: {
+                              value: _vm.author_validity,
+                              callback: function($$v) {
+                                _vm.author_validity = $$v
+                              },
+                              expression: "author_validity"
+                            }
+                          },
+                          [
+                            _c("v-text-field", {
+                              ref: "quoteAuthor",
+                              refInFor: true,
+                              attrs: {
+                                dense: "",
+                                counter: "50",
+                                rules: _vm.authorRules
+                              },
+                              on: {
+                                keydown: function($event) {
+                                  if (
+                                    !$event.type.indexOf("key") &&
+                                    _vm._k(
+                                      $event.keyCode,
+                                      "enter",
+                                      13,
+                                      $event.key,
+                                      "Enter"
+                                    )
+                                  ) {
+                                    return null
+                                  }
+                                  return _vm.updateQuote($event)
+                                },
+                                blur: _vm.updateQuote
+                              },
+                              scopedSlots: _vm._u(
+                                [
+                                  {
+                                    key: "prepend-inner",
+                                    fn: function() {
+                                      return [
+                                        _c(
+                                          "v-icon",
+                                          {
+                                            attrs: {
+                                              color: "green",
+                                              large: "",
+                                              disabled: !_vm.author_validity
+                                            },
+                                            on: { click: _vm.updateQuote }
+                                          },
+                                          [_vm._v("mdi-content-save")]
+                                        )
+                                      ]
+                                    },
+                                    proxy: true
+                                  }
+                                ],
+                                null,
+                                true
+                              ),
+                              model: {
+                                value: _vm.quoteAuthor,
+                                callback: function($$v) {
+                                  _vm.quoteAuthor = $$v
+                                },
+                                expression: "quoteAuthor"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                  ],
+                  1
                 ),
                 _vm._v(" "),
                 _c(
                   "v-btn",
                   {
                     staticClass: "mx-2 mb-2",
-                    attrs: {
-                      icon: "",
-                      dark: "",
-                      small: "",
-                      color: "blue-grey lighten-4"
-                    },
+                    attrs: { icon: "", color: "blue-grey lighten-4" },
                     on: {
                       click: function($event) {
                         return _vm.deleteQuote(quote.id)
@@ -21991,7 +22194,7 @@ var render = function() {
             )
           }),
           _vm._v(" "),
-          _vm.quotes.length == 0
+          _vm.noDataInDB
             ? _c(
                 "v-card",
                 [_c("v-card-text", [_vm._v("No quotes found in DB!")])],

@@ -26,3 +26,19 @@ h6 {
 .test_class_to_be_removed {
   color: purple;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.word-break-normal {
+  word-break: normal;
+}
+
+.view-centered {
+  position: absolute;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}

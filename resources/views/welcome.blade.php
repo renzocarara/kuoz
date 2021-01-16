@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Kuoz</title>
+        <link rel="icon" href="{{ asset('images/favicon.png') }}" type="image/png" />
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">

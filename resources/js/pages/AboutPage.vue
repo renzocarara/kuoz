@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1><v-icon>mdi-information</v-icon>About this app</h1>
+    <h1 class="text-center">About this app</h1>
     <v-card class="d-flex justify-center flex-column">
       <v-card-title>Purpose</v-card-title>
       <v-card-text>
@@ -9,14 +9,14 @@
       </v-card-text>
 
       <v-card-title>How it works</v-card-title>
-      <v-card-text> blah blah </v-card-text>
-      <v-img
+      <v-card-text> TBD </v-card-text>
+      <!-- <v-img
         class="my-2"
         alt="lavu flowchart"
         max-width="420"
         src="assets/to_be_defined_flowchart.png"
-      ></v-img>
-      <v-card-text> blah blah </v-card-text>
+      ></v-img> -->
+      <!-- <v-card-text> TBD </v-card-text> -->
 
       <v-card-title>Technologies</v-card-title>
       <v-card-text>

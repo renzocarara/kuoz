@@ -2,9 +2,15 @@
   <div>
     <h1 class="text-center">All Quotes</h1>
 
-    <div v-if="isLoading">
-      <v-progress-circular indeterminate color="deep-red"></v-progress-circular>
-      <p class="purple--text">Reading data...</p>
+    <div v-if="isLoading" class="view-centered">
+      <v-progress-circular
+        class="ml-7"
+        indeterminate
+        size="50"
+        width="8"
+        color="red"
+      ></v-progress-circular>
+      <p class="red--text text-h6">Reading data...</p>
     </div>
     <v-container class="d-flex flex-wrap justify-center">
       <v-card
@@ -13,14 +19,14 @@
         v-for="quote in quotes"
         :key="quote.id"
       >
-        <v-card-title class="pb-0"
+        <v-card-title class="pb-0 word-break-normal"
           ><strong>&ldquo;{{ quote.text }}&rdquo;</strong></v-card-title
         >
-        <v-card-text class="text-right text-subtitle-1"
+        <v-card-text class="text-right text-subtitle-1 word-break-normal"
           >-- {{ quote.author }} &hyphen;&hyphen;</v-card-text
         >
       </v-card>
-      <v-card v-if="quotes.length == 0"
+      <v-card v-if="noDataInDB"
         ><v-card-text>No quotes found in DB!</v-card-text></v-card
       >
     </v-container>
@@ -33,7 +39,9 @@ export default {
   data() {
     return {
       quotes: [],
-      isLoading: true,
+      isLoading: false,
+
+      noDataInDB: false,
     };
   },
   mounted() {
@@ -42,7 +50,12 @@ export default {
   },
   methods: {
     loadQuotes() {
+      // DESCRIPTION:
+      // read the data (all the quotes) from DB via axios API call
+
       console.log("loadQuotes() called..");
+
+      this.isLoading = true;
       // read data from DB via api call
       axios({
         method: "GET",
@@ -64,6 +77,7 @@ export default {
       console.log("response.data", response.data);
       //
       this.quotes = response.data;
+      this.noDataInDB = !this.quotes.length;
     },
     handleError(error) {
       console.log("API CALL FAILED");

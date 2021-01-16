@@ -1,7 +1,17 @@
 <template>
   <v-container>
+    <div v-if="inProgress">
+      <v-progress-circular
+        indeterminate
+        size="50"
+        width="8"
+        color="red"
+      ></v-progress-circular>
+      <p class="red--text text-h6">{{ progressMessage }}</p>
+    </div>
+
     <v-form v-model="validity" ref="form">
-      <h3>Add new Quote</h3>
+      <h3 class="text-center">Add new Quote</h3>
       <v-card width="" class="mx-3 my-3">
         <v-card-text>
           <!-- input field for quote text -->
@@ -56,6 +66,9 @@ import {
 
 export default {
   data: () => ({
+    progressMessage: "",
+    inProgress: false, // flag for progress circle
+
     text: "", // text of quote
     author: "", // author of quote
 
@@ -80,6 +93,9 @@ export default {
 
   methods: {
     addQuote() {
+      // DESCRIPTION:
+      // check input and, if OK, write data in DB via axios API call
+
       // remove unwanted blanks, trim blanks and replace multiple blank sequences with only one blank
       let text = this.text.trim().replace(/  +/g, " ");
       let author = this.author.trim().replace(/  +/g, " ");
@@ -90,6 +106,8 @@ export default {
         author.length >= AUTHOR_MIN_CHARS &&
         author.length <= AUTHOR_MAX_CHARS
       ) {
+        this.inProgress = true;
+        this.progressMessage = "Writing data...";
         // update the DB
         axios({
           method: "POST",
@@ -110,7 +128,7 @@ export default {
             this.handleError(error);
           })
           .finally(() => {
-            this.isLoading = false;
+            this.inProgress = false;
           });
       }
 

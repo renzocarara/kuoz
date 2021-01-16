@@ -1,37 +1,45 @@
 <template>
   <div>
     <h1 class="text-center">Manage Quotes</h1>
-    <h1>uid: {{ this.$store.state.uid }}</h1>
-    <div v-if="isLoading">
-      <v-progress-circular indeterminate color="deep-red"></v-progress-circular>
-      <p class="purple--text">Reading data...</p>
+    <!-- <h1>uid: {{ this.$store.state.uid }}</h1> -->
+    <div v-if="inProgress" class="view-centered">
+      <v-progress-circular
+        indeterminate
+        size="50"
+        width="8"
+        color="red"
+      ></v-progress-circular>
+      <p class="red--text text-h6">{{ progressMessage }}</p>
     </div>
     <!-- emitDbUpdated event: when a DB update occurs then reload data from DB -->
     <add-quote @emitDbUpdated="loadUserQuotes"></add-quote>
 
     <v-container>
-      <h3>Your current Quotes</h3>
+      <h3 class="text-center">Your current Quotes</h3>
     </v-container>
 
-    <v-container class="d-flex flex-wrap justify-center">
+    <v-container class="d-flex flex-wrap justify-center pt-0">
       <v-card
         width=""
         class="mx-3 my-3"
         v-for="(quote, index) in quotes"
         :key="index"
       >
-        <v-card-title class="pb-0">
+        <v-card-title class="pb-0 word-break-normal">
+          <!-- render the span when no edit has begun or edit has begun but the element is not the one clicked -->
+          <!-- or the click was on the "author field" -->
           <span
-            v-if="quoteId == null || quote.id != quoteId"
-            @click="editQuoteText(index)"
+            class="cursor-pointer"
+            v-if="quoteId == null || quote.id != quoteId || fieldType != 'text'"
+            @click="editQuote(index, 'text')"
           >
             <strong>&ldquo;{{ quote.text }}&rdquo;</strong>
           </span>
 
-          <!-- text-area to edit the quote -->
-          <v-form v-else v-model="validity">
+          <!-- textarea to edit the quote -->
+          <v-form v-else v-model="text_validity">
             <v-textarea
-              ref="quoteEdit"
+              ref="quoteText"
               dense
               counter="255"
               v-model="quoteText"
@@ -39,12 +47,13 @@
               @keydown.enter="updateQuote"
               @blur="updateQuote"
             >
+              <!-- floppy disk icon to save data -->
               <template v-slot:prepend-inner>
                 <v-icon
                   @click="updateQuote"
                   color="green"
                   large
-                  :disabled="!validity"
+                  :disabled="!text_validity"
                   >mdi-content-save</v-icon
                 >
               </template>
@@ -52,29 +61,51 @@
           </v-form>
         </v-card-title>
 
-        <!-- **************************************************************** -->
-        <!-- **************************************************************** -->
-        <!-- **************************************************************** -->
-        <!-- **************************************************************** -->
-        <!-- **************************************************************** -->
-        <!-- all'interno di card-text inserire 1 span con a seguire un form con dentro un text-field -->
+        <v-card-text class="text-right text-subtitle-1 word-break-normal"
+          ><span
+            class="cursor-pointer"
+            v-if="
+              quoteId == null || quote.id != quoteId || fieldType != 'author'
+            "
+            @click="editQuote(index, 'author')"
+            >-- {{ quote.author }} --</span
+          >
 
-        <v-card-text class="text-right text-subtitle-1"
-          >-- {{ quote.author }} --</v-card-text
-        >
+          <!-- text-field to edit the author -->
+          <v-form v-else v-model="author_validity">
+            <v-text-field
+              ref="quoteAuthor"
+              dense
+              counter="50"
+              v-model="quoteAuthor"
+              :rules="authorRules"
+              @keydown.enter="updateQuote"
+              @blur="updateQuote"
+            >
+              <!-- floppy disk icon to save data -->
+              <template v-slot:prepend-inner>
+                <v-icon
+                  @click="updateQuote"
+                  color="green"
+                  large
+                  :disabled="!author_validity"
+                  >mdi-content-save</v-icon
+                >
+              </template>
+            </v-text-field>
+          </v-form>
+        </v-card-text>
 
         <v-btn
           icon
           class="mx-2 mb-2"
-          dark
-          small
           color="blue-grey lighten-4"
           @click="deleteQuote(quote.id)"
         >
           <v-icon dark> mdi-trash-can-outline </v-icon>
         </v-btn>
       </v-card>
-      <v-card v-if="quotes.length == 0"
+      <v-card v-if="noDataInDB"
         ><v-card-text>No quotes found in DB!</v-card-text></v-card
       >
     </v-container>
@@ -99,14 +130,19 @@ export default {
   data() {
     return {
       quotes: [], // quotes read from DB
-      isLoading: true, // flag for progress circle
+      noDataInDB: false, // true if DB reading returns no data
+
+      progressMessage: "",
+      inProgress: false, // flag for progress circle
 
       quoteId: null, // id of quote to be edited
       quoteText: "", // quote text to be edited
       quoteAuthor: "", // quote author to be edited
       index: 0, // index of the quote to be edited (the element in quotes[] array)
+      fieldType: "", // type of field beeing edited ("author" or "text")
 
-      validity: false, // check validity
+      text_validity: false, // check validity
+      author_validity: false, // check validity
       textRules: [
         (v) => v.trim().length <= TEXT_MAX_CHARS || "Max 255 characters",
         (v) => v.trim().length >= TEXT_MIN_CHARS || "Min 3 characters",
@@ -123,7 +159,15 @@ export default {
   },
   methods: {
     loadUserQuotes() {
+      // DESCRIPTION:
+      // read the data from DB via axios API call
+      // only the data associated to the logged user are read from DB
+
       console.log("LoadUserQuotes() called...");
+
+      this.inProgress = true;
+      this.progressMessage = "Reading data...";
+
       // read data from DB via API call
       axios({
         method: "POST",
@@ -134,19 +178,26 @@ export default {
           console.log("loadUserQuotes() response.data: ", response.data);
           // save received data in local variable
           this.quotes = response.data;
+          this.noDataInDB = !this.quotes.length;
         })
         .catch((error) => {
           this.handleError(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          this.inProgress = false;
         });
     },
 
     deleteQuote(id) {
+      // DESCRIPTION:
+      // allow the deletion of a quote
       // this method receives the id of the quote to be deleted
+
       console.log("deleteQuotes called..");
       console.log("id: ", id);
+
+      this.inProgress = true;
+      this.progressMessage = "Deleting data...";
 
       // delete data via API call
       axios({
@@ -161,42 +212,53 @@ export default {
           this.handleError(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          this.inProgress = false;
         });
     },
 
-    editQuoteText(index) {
-      console.log("editQuoteText called..");
-      console.log("quoteId", this.quotes[index].id);
-
+    editQuote(index, fieldType) {
       // DESCRIPTION:
-      // show a textarea to allow the user to modify the quote
+      // show an input field (v-text-field or v-textarea) instead of a span
+      // to allow the user to modify data
+
+      console.log("editQuote called..");
+      console.log("quoteId", this.quotes[index].id);
 
       // make the textarea appear and the span disappear
       this.quoteId = this.quotes[index].id;
+
+      this.fieldType = fieldType; // type of field selected for edit ("text" or "author")
 
       this.index = index; // index of the element being edited
       // copy the current values of span element before start edit the input element
       this.quoteText = this.quotes[index].text;
       this.quoteAuthor = this.quotes[index].author;
 
-      // NOTA: qui ancora il v-text-field non è stato renderizzato, per cui per settare il focus devo aspettare
-      // che  l'elemento esista nel DOM, quindi uso la "nextTick()" che aspetta il prossimo aggiornamento del DOM
+      // NOTA: at this moment v-text input is not yet rendered, so to set focus on it I need to wait
+      // when the element actually exists in the DOM, so I use the "nextTick()" that listen for the next update of DOM
       // NOTE:
-      // setto il focus sul v-text-field del task da editare
-      // console.log("this.$refs", this.$refs); // elenco degli elementi che hanno un attributo "ref" associato
-      // console.log("this.$refs.quoteEdit[0]", this.$refs.quoteEdit[0]);
-      // il ref "textEdit" è un array (perchè definito in un loop v-for), per cui per accederci devo usare la
-      // square notation, con indice "0", l'array avrà sempre 1 solo elemento, perchè renderizzo l'elemento
-      // che ha ref="quoteEdit" quando entro nel v-else, e ciò accade solo 1 volta all'interno di tutto il loop v-for
-      this.$nextTick(() => {
-        this.$refs.quoteEdit[0].focus();
-      });
+      // the ref in this case is an array (because it is defined in a v-for loop), so to access it I use the
+      // square notation, with "0" index, the array will have always only 1 element, because I render the element
+      // having the ref attribute when I enter the v-else branch, this happens only 1 time during all the v-for loop
+      // console.log("this.$refs", this.$refs); // list of elements with a ref attribute
+      // console.log("this.$refs.quoteText[0]", this.$refs.quoteText[0]);
+
+      // set focus on the input field to be edited
+      if (fieldType == "text") {
+        this.$nextTick(() => {
+          this.$refs.quoteText[0].focus();
+        });
+      } else {
+        // fieldType="author"
+        this.$nextTick(() => {
+          this.$refs.quoteAuthor[0].focus();
+        });
+      }
     },
 
     updateQuote() {
       // DESCRIPTION:
-      // it is called in three different cases while the user is editing the text or the author:
+      // it is called in three different cases while the user is editing a field:
       // user presses ENTER, user clicks floppy icon or the input field looses focus
       // take the modified data, makes some validity checks and, if ok,
       // update the DB via an axios API call
@@ -215,6 +277,9 @@ export default {
         author.length >= AUTHOR_MIN_CHARS &&
         author.length <= AUTHOR_MAX_CHARS
       ) {
+        this.inProgress = true;
+        this.progressMessage = "Updating data...";
+
         // update DB
         axios({
           method: "PUT",
@@ -228,14 +293,14 @@ export default {
           },
         })
           .then((response) => {
-            //  reload data after update
+            //  reload data after update, to show user the last data changes
             this.loadUserQuotes();
           })
           .catch((error) => {
             this.handleError(error);
           })
           .finally(() => {
-            this.isLoading = false;
+            this.inProgress = false;
           });
 
         // set the span with modified text before to make it appears again

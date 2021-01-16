@@ -3,8 +3,8 @@
     <v-app-bar color="blue-grey" dark app>
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
       <v-toolbar-title
-        >Kuoz<span class="subtitle-2 ml-5">...</span></v-toolbar-title
-      >
+        >Kuoz<span class="subtitle-2 ml-5"></span
+      ></v-toolbar-title>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" app temporary>

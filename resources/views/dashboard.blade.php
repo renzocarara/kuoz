@@ -6,6 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Kuoz') }}</title>
+        <link rel="icon" href="{{ asset('images/favicon.png') }}" type="image/png" />
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
