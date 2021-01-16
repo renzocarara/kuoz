@@ -4,41 +4,42 @@
       <h3>Add new Quote</h3>
       <v-card width="" class="mx-3 my-3">
         <v-card-text>
+          <!-- input field for quote text -->
           <v-textarea
             placeholder="Add a new quote here..."
-            id="text-input"
             v-model="text"
-            outlined
+            dense
+            filled
             rows="2"
             :rules="textRules"
             counter="255"
             color=""
             background-color=""
           ></v-textarea>
-
+          <!-- input field for quote author -->
           <v-text-field
             placeholder="Add the author"
-            id="author-input"
             v-model="author"
-            outlined
+            dense
+            filled
             :rules="authorRules"
             counter="50"
             color=""
             background-color=""
             @keydown.enter.prevent="addQuote"
           >
+            <!-- button to add the input -->
+            <template v-slot:append>
+              <v-icon
+                :disabled="!validity"
+                class="ml-2"
+                size="40"
+                color="green"
+                @click="addQuote"
+                >mdi-playlist-plus</v-icon
+              >
+            </template>
           </v-text-field>
-
-          <v-btn
-            class="white--text"
-            small
-            rounded
-            :disabled="!validity"
-            color="blue-grey"
-            @click="addQuote"
-          >
-            ADD
-          </v-btn>
         </v-card-text>
       </v-card>
     </v-form>
@@ -46,6 +47,13 @@
 </template>
 
 <script>
+import {
+  TEXT_MAX_CHARS,
+  TEXT_MIN_CHARS,
+  AUTHOR_MAX_CHARS,
+  AUTHOR_MIN_CHARS,
+} from "../const.js";
+
 export default {
   data: () => ({
     text: "", // text of quote
@@ -53,18 +61,35 @@ export default {
 
     validity: false, // check form validity
     textRules: [
-      (v) => v.trim().length <= 255 || "Max 255 characters",
-      (v) => v.trim().length >= 3 || "Min 3 characters",
+      (v) =>
+        v.trim().length <= TEXT_MAX_CHARS ||
+        "Max " + TEXT_MAX_CHARS + " characters",
+      (v) =>
+        v.trim().length >= TEXT_MIN_CHARS ||
+        "Min " + TEXT_MIN_CHARS + " characters",
     ],
     authorRules: [
-      (v) => v.trim().length <= 50 || "Max 50 characters",
-      (v) => v.trim().length >= 2 || "Min 2 characters",
+      (v) =>
+        v.trim().length <= AUTHOR_MAX_CHARS ||
+        "Max " + AUTHOR_MAX_CHARS + " characters",
+      (v) =>
+        v.trim().length >= AUTHOR_MIN_CHARS ||
+        "Min " + AUTHOR_MIN_CHARS + " characters",
     ],
   }),
 
   methods: {
     addQuote() {
-      if (this.text.trim() !== "" && this.author.trim() !== "") {
+      // remove unwanted blanks, trim blanks and replace multiple blank sequences with only one blank
+      let text = this.text.trim().replace(/  +/g, " ");
+      let author = this.author.trim().replace(/  +/g, " ");
+
+      if (
+        text.length >= TEXT_MIN_CHARS &&
+        text.length <= TEXT_MAX_CHARS &&
+        author.length >= AUTHOR_MIN_CHARS &&
+        author.length <= AUTHOR_MAX_CHARS
+      ) {
         // update the DB
         axios({
           method: "POST",
@@ -73,8 +98,8 @@ export default {
             "content-type": "application/json",
           },
           params: {
-            text: this.text,
-            author: this.author,
+            text: text,
+            author: author,
             user_id: this.$store.state.uid,
           },
         })
@@ -95,20 +120,20 @@ export default {
     },
 
     handleSuccess(response) {
-      console.log("addQuote API CALL SUCCESS");
-      console.log("addQuote response.data: ", response.data);
+      console.log("API CALL SUCCESS addQuote response.data: ", response.data);
 
       // emit an event to let the parent component know that DB has been updated
       this.$emit("emitDbUpdated");
     },
     handleError(error) {
-      console.log("addQuote API CALL FAILED");
-      console.log("addQuote() error: ", error);
+      console.log("API CALL FAILED addQuote() error: ", error);
       alert("API call failed!");
     },
   },
 };
 </script>
-
-<style>
+<style  scoped lang="scss">
+.v-icon.mdi-playlist-plus:hover {
+  transform: scale(1.2);
+}
 </style>

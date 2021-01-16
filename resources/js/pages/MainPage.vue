@@ -8,15 +8,15 @@
     </div>
     <v-container class="d-flex flex-wrap justify-center">
       <v-card
+        class="d-flex flex-column justify-space-between mx-3 my-3"
         width="240"
-        class="mx-3 my-3"
         v-for="quote in quotes"
         :key="quote.id"
       >
         <v-card-title class="pb-0"
           ><strong>&ldquo;{{ quote.text }}&rdquo;</strong></v-card-title
         >
-        <v-card-text class="text-right text-h6"
+        <v-card-text class="text-right text-subtitle-1"
           >-- {{ quote.author }} &hyphen;&hyphen;</v-card-text
         >
       </v-card>
