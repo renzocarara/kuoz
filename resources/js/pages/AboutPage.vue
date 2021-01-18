@@ -33,15 +33,17 @@
           rel="noopener noreferrer"
           >Laravel Breeze</a
         >, it allows to register, login, and some more out-of-the box features
-        provided by Laravel.
+        provided by Laravel. <br />
+        User should register to have access to the app. <br />
+        Once logged in, user can see all the Quotes recorded in the DB. User can
+        insert new quotes or modify and delete existing ones.
       </v-card-text>
       <!-- <v-img
         class="my-2"
-        alt="lavu flowchart"
+        alt="flowchart"
         max-width="420"
-        src="assets/to_be_defined_flowchart.png"
+        src="public/images/flowchart.png"
       ></v-img> -->
-      <!-- <v-card-text> TBD </v-card-text> -->
 
       <v-card-title>Technologies</v-card-title>
       <v-card-text>

@@ -23,8 +23,12 @@
           ><strong>&ldquo;{{ quote.text }}&rdquo;</strong></v-card-title
         >
         <v-card-text class="text-right text-subtitle-1 word-break-normal"
-          >-- {{ quote.author }} &hyphen;&hyphen;</v-card-text
-        >
+          >-- {{ quote.author }} &hyphen;&hyphen;
+
+          <!-- <br /><small class=""
+            >created: {{ quote.created_at.substr(0, 10) }}</small
+          > -->
+        </v-card-text>
       </v-card>
       <v-card v-if="noDataInDB"
         ><v-card-text>No quotes found in DB!</v-card-text></v-card

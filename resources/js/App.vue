@@ -2,9 +2,16 @@
   <v-app>
     <v-app-bar color="blue-grey" dark app>
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
-      <v-toolbar-title
-        >Kuoz<span class="subtitle-2 ml-5"></span
-      ></v-toolbar-title>
+      <v-toolbar-title>
+        <v-img
+          class="d-inline-block"
+          src="/images/logo.png"
+          alt="logo"
+          height="40"
+          width="40"
+        ></v-img>
+        <span class="kuoz-title text-h3">uoz</span>
+      </v-toolbar-title>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" app temporary>
@@ -106,5 +113,10 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../scss/_variables";
+.kuoz-title {
+  color: $dark_blue;
+  text-shadow: -1px 0 $secondary, 0 1px $secondary;
+}
 </style>
