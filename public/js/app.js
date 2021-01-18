@@ -2172,6 +2172,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "AboutPage" // nome di questo componente
 
@@ -21775,17 +21800,74 @@ var render = function() {
         "v-card",
         { staticClass: "d-flex justify-center flex-column" },
         [
+          _c("v-card-title", [_vm._v("Version")]),
+          _vm._v(" "),
+          _c("v-card-text", [_vm._v(" v.0.1.0 ")]),
+          _vm._v(" "),
           _c("v-card-title", [_vm._v("Purpose")]),
           _vm._v(" "),
           _c("v-card-text", [
-            _vm._v(
-              "\n      This is an exercise combining Laravel 8 framework with a PostgreSQL DB\n      and a Vue frontend.\n    "
-            )
+            _vm._v("\n      This is an exercise combining\n      "),
+            _c(
+              "a",
+              {
+                attrs: {
+                  href: "https://laravel.com/",
+                  target: "_blank",
+                  rel: "noopener noreferrer"
+                }
+              },
+              [_vm._v("Laravel\n      ")]
+            ),
+            _vm._v("\n       8 framework with a\n      "),
+            _c(
+              "a",
+              {
+                attrs: {
+                  href: "https://www.postgresql.org/",
+                  target: "_blank",
+                  rel: "noopener noreferrer"
+                }
+              },
+              [_vm._v("PostgreSQL\n      ")]
+            ),
+            _vm._v("\n       DB and a\n      "),
+            _c(
+              "a",
+              {
+                attrs: {
+                  href: "https://vuejs.org/",
+                  target: "_blank",
+                  rel: "noopener noreferrer"
+                }
+              },
+              [_vm._v("Vue.js\n      ")]
+            ),
+            _vm._v("\n       frontend.\n    ")
           ]),
           _vm._v(" "),
           _c("v-card-title", [_vm._v("How it works")]),
           _vm._v(" "),
-          _c("v-card-text", [_vm._v(" TBD ")]),
+          _c("v-card-text", [
+            _vm._v(
+              "A minimal authentication system is implemented through\n      "
+            ),
+            _c(
+              "a",
+              {
+                attrs: {
+                  href:
+                    "https://laravel.com/docs/8.x/starter-kits#laravel-breeze",
+                  target: "_blank",
+                  rel: "noopener noreferrer"
+                }
+              },
+              [_vm._v("Laravel Breeze")]
+            ),
+            _vm._v(
+              ", it allows to register, login, and some more out-of-the box features\n      provided by Laravel.\n    "
+            )
+          ]),
           _vm._v(" "),
           _c("v-card-title", [_vm._v("Technologies")]),
           _vm._v(" "),

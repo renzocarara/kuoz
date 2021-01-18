@@ -2,14 +2,39 @@
   <div>
     <h1 class="text-center">About this app</h1>
     <v-card class="d-flex justify-center flex-column">
+      <v-card-title>Version</v-card-title>
+      <v-card-text> v.0.1.0 </v-card-text>
       <v-card-title>Purpose</v-card-title>
       <v-card-text>
-        This is an exercise combining Laravel 8 framework with a PostgreSQL DB
-        and a Vue frontend.
+        This is an exercise combining
+        <a href="https://laravel.com/" target="_blank" rel="noopener noreferrer"
+          >Laravel
+        </a>
+        &nbsp;8 framework with a
+        <a
+          href="https://www.postgresql.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >PostgreSQL
+        </a>
+        &nbsp;DB and a
+        <a href="https://vuejs.org/" target="_blank" rel="noopener noreferrer"
+          >Vue.js
+        </a>
+        &nbsp;frontend.
       </v-card-text>
 
       <v-card-title>How it works</v-card-title>
-      <v-card-text> TBD </v-card-text>
+      <v-card-text
+        >A minimal authentication system is implemented through
+        <a
+          href="https://laravel.com/docs/8.x/starter-kits#laravel-breeze"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Laravel Breeze</a
+        >, it allows to register, login, and some more out-of-the box features
+        provided by Laravel.
+      </v-card-text>
       <!-- <v-img
         class="my-2"
         alt="lavu flowchart"
