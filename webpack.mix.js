@@ -11,8 +11,8 @@ const mix = require("laravel-mix");
  |
  */
 
-// copy Vuetify Style from node_modules to public folder
 mix.copy(
+    // copy Vuetify Style from node_modules to public folder
     "node_modules/vuetify/dist/vuetify.min.css",
     "public/css/vuetify.min.css"
 );
@@ -20,12 +20,15 @@ mix.copy(
 mix.js("resources/js/app.js", "public/js")
     .vue({ version: 2 }) // <<<<<<------ important
     .postCss("resources/css/app.css", "public/css/", [
-        // generate app.css
+        // generate app.css, contains Tailwind style used by the authentication views
         require("postcss-import"),
         require("tailwindcss"),
         require("autoprefixer")
     ])
+    .postCss("resources/css/welcome.css", "public/css/welcome.css", [
+        // generate welcome.css, specific style just for welcome view
+    ])
     .sass("resources/scss/app.scss", "public/css/my.css", [
-        // generate my.css
+        // generate my.css, scss style for the Vue App pages
         //
     ]);

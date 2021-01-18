@@ -1,7 +1,7 @@
 /* 
--------------------------
-          _common
--------------------------
+-------------------------------------
+    START SECTION:      _common
+-------------------------------------
 */
 // fonts for h1, h2, etc
 h1,
@@ -12,9 +12,6 @@ h5,
 h6 {
     font-family: $heading-font;
     color: $dark-blue;
-}
-.test_class_to_be_removed {
-    color: purple;
 }
 
 .cursor-pointer {
@@ -30,3 +27,9 @@ h6 {
     transform: translate(-50%, -50%);
     z-index: 10;
 }
+
+/* 
+-------------------------------------
+    END SECTION:      _common
+-------------------------------------
+*/

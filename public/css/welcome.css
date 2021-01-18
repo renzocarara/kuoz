@@ -1,0 +1,20 @@
+/* 
+Style specific for welcome page
+*/
+
+.access-panel {
+    align-self: flex-end;
+    margin-right: 1rem;
+}
+
+.welcome-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.title-centered {
+    align-self: center;
+}
+
