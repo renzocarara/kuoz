@@ -20,7 +20,7 @@ class CreateQuotesTable extends Migration
 
             $table->string('text', 255);
             $table->string('author', 50)->default('Unknown');
-            // $table->string('category', 50)->nullable();
+            $table->string('category', 50)->nullable();
 
             $table->foreign('user_id')->references('id')->on('users');
 
