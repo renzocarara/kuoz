@@ -17,9 +17,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
+
+// routes: '/', '/dashboard' and authentication routes are handled by the above lines,
+// all the other routes are handled by the line below
+
+Route::view('/{any}', 'dashboard')->where('any', '.*');

@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import MainPage from "../pages/MainPage.vue";
 import ManagePage from "../pages/ManagePage.vue";
 import AboutPage from "../pages/AboutPage.vue";
+import NotFound from "../pages/NotFound.vue";
 
 const routes = [
     {
@@ -19,6 +20,11 @@ const routes = [
         path: "/about",
         name: "AboutPage",
         component: AboutPage
+    },
+    {
+        path: "*",
+        name: "NotFound",
+        component: NotFound
     }
 ];
 

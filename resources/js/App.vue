@@ -20,32 +20,30 @@
           v-model="group"
           active-class="blue-grey--text text--accent-4"
         >
-          <v-list-item>
+          <v-list-item to="/dashboard">
             <v-list-item-icon>
               <v-icon>mdi-home-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
-              ><router-link to="/dashboard"
-                >Dashboard</router-link
-              ></v-list-item-title
+              ><span class="text-h5">Dashboard</span></v-list-item-title
             >
           </v-list-item>
 
-          <v-list-item>
+          <v-list-item to="/manage">
             <v-list-item-icon>
               <v-icon>mdi-pencil-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
-              ><router-link to="/manage">Manage</router-link></v-list-item-title
+              ><span class="text-h5">Manage</span></v-list-item-title
             >
           </v-list-item>
 
-          <v-list-item>
+          <v-list-item to="/about">
             <v-list-item-icon>
               <v-icon>mdi-information-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title
-              ><router-link to="/about">About</router-link></v-list-item-title
+              ><span class="text-h5">About</span></v-list-item-title
             >
           </v-list-item>
 
@@ -53,7 +51,9 @@
             <v-list-item-icon>
               <v-icon>mdi-exit-to-app</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Logout</v-list-item-title>
+            <v-list-item-title
+              ><span class="text-h5">Logout</span></v-list-item-title
+            >
           </v-list-item>
         </v-list-item-group>
       </v-list>
