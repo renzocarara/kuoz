@@ -23,11 +23,13 @@
           ><strong>&ldquo;{{ quote.text }}&rdquo;</strong></v-card-title
         >
         <v-card-text class="text-right text-subtitle-1 word-break-normal"
-          >-- {{ quote.author }} &hyphen;&hyphen;
+          >--<strong> {{ quote.author }} </strong>--
 
-          <!-- <br /><small class=""
-            >created: {{ quote.created_at.substr(0, 10) }}</small
-          > -->
+          <hr class="mt-3" />
+          <v-spacer />
+          <small>contributor: {{ username(quote.user_id) }}</small
+          ><br />
+          <small class="">inserted: {{ quote.created_at.substr(0, 10) }}</small>
         </v-card-text>
       </v-card>
       <v-card v-if="noDataInDB"
@@ -43,6 +45,7 @@ export default {
   data() {
     return {
       quotes: [],
+      users: [],
       isLoading: false,
 
       noDataInDB: false,
@@ -52,6 +55,7 @@ export default {
     console.log("MainPage component mounted...");
     this.loadQuotes();
   },
+
   methods: {
     loadQuotes() {
       // DESCRIPTION:
@@ -80,13 +84,35 @@ export default {
       console.log("API CALL SUCCESS");
       console.log("response.data", response.data);
       //
-      this.quotes = response.data;
+      this.quotes = response.data[0];
+      this.users = response.data[1];
+
       this.noDataInDB = !this.quotes.length;
     },
     handleError(error) {
       console.log("API CALL FAILED");
       console.log("error", error);
       alert("API call failed!");
+    },
+
+    username(user_id) {
+      // DESCRIPTION:
+      // get user name from user id
+      console.log("user_id:", user_id);
+
+      // search id in the array containing the user list
+      // if not found "undefined" is returned, otherwise an array with the searched element
+      let userName = this.users.filter((obj) => {
+        return obj.id === user_id;
+      });
+
+      if (userName !== undefined) {
+        userName = userName[0].name;
+      } else {
+        userName = "Not available";
+      }
+
+      return userName;
     },
   },
 };

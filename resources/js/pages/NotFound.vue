@@ -17,7 +17,9 @@
         <hr class="my-3" />
         <v-card-actions>
           <v-spacer />
-          <v-btn dark color="#ff5eda" to="/dashboard">Back to dashboard</v-btn>
+          <v-btn dark color="blue-grey" to="/dashboard"
+            >Back to dashboard</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-flex>

@@ -38,12 +38,6 @@
         Once logged in, user can see all the Quotes recorded in the DB. User can
         insert new quotes or modify and delete existing ones.
       </v-card-text>
-      <!-- <v-img
-        class="my-2"
-        alt="flowchart"
-        max-width="420"
-        src="public/images/flowchart.png"
-      ></v-img> -->
 
       <v-card-title>Technologies</v-card-title>
       <v-card-text>
@@ -52,6 +46,7 @@
           <li>VUE.JS v2.6.12</li>
           <li>VUETIFY v2.4.2</li>
           <li>VUE-ROUTER v3.4.9</li>
+          <li>VUEX v3.6.0</li>
         </ul>
       </v-card-text>
     </v-card>

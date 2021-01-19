@@ -100,10 +100,23 @@
           icon
           class="mx-2 mb-2"
           color="blue-grey lighten-4"
-          @click="deleteQuote(quote.id)"
+          @click="showDialog(quote.id)"
         >
           <v-icon dark> mdi-trash-can-outline </v-icon>
         </v-btn>
+
+        <!-- confirmation dialog - Delete Quote? -->
+        <!-- @emitConfirmed="deleteQuote(quote.id)" -->
+        <confirmation-dialog
+          v-if="deleteQuoteDialog"
+          @emitConfirmed="deleteQuote"
+          @emitCancelled="deleteQuoteDialog = false"
+          dialogTitleLabel="Warning"
+          dialogTitleText="Delete Quote"
+          dialogMessage="You're are gonna delete this quote from the Data Base! Do you really want to proceed?"
+          dialogConfirmBtn="DELETE"
+          dialogCancelBtn="CANCEL"
+        />
       </v-card>
       <v-card v-if="noDataInDB"
         ><v-card-text>No quotes found in DB!</v-card-text></v-card
@@ -114,6 +127,7 @@
 
 <script>
 import AddQuote from "../components/AddQuote";
+import ConfirmationDialog from "../components/ConfirmationDialog";
 
 import {
   TEXT_MAX_CHARS,
@@ -126,6 +140,7 @@ export default {
   name: "ManagePage",
   components: {
     AddQuote,
+    ConfirmationDialog,
   },
   data() {
     return {
@@ -140,6 +155,9 @@ export default {
       quoteAuthor: "", // quote author to be edited
       index: 0, // index of the quote to be edited (the element in quotes[] array)
       fieldType: "", // type of field beeing edited ("author" or "text")
+
+      deleteQuoteDialog: false, // flag to enable confirmation dialog
+      id_to_be_deleted: 0, // id of quote to de deleted
 
       text_validity: false, // check validity
       author_validity: false, // check validity
@@ -188,13 +206,21 @@ export default {
         });
     },
 
-    deleteQuote(id) {
+    showDialog(id) {
+      this.deleteQuoteDialog = true;
+      this.id_to_be_deleted = id;
+      console.log("id al click su bidone: ", id);
+    },
+
+    deleteQuote() {
       // DESCRIPTION:
       // allow the deletion of a quote
-      // this method receives the id of the quote to be deleted
+
+      // hide confirmation dialog
+      this.deleteQuoteDialog = false;
 
       console.log("deleteQuotes called..");
-      console.log("id: ", id);
+      console.log("id: ", this.id_to_be_deleted);
 
       this.inProgress = true;
       this.progressMessage = "Deleting data...";
@@ -202,7 +228,7 @@ export default {
       // delete data via API call
       axios({
         method: "DELETE",
-        url: "/api/kuoz/delete/" + id,
+        url: "/api/kuoz/delete/" + this.id_to_be_deleted,
       })
         .then((response) => {
           //  reload data after deletion

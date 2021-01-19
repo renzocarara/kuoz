@@ -24,6 +24,6 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 // routes: '/', '/dashboard' and authentication routes are handled by the above lines,
-// all the other routes are handled by the line below
+// all the other routes are handled by the line below (that is the vue-router takes care of them)
 
 Route::view('/{any}', 'dashboard')->where('any', '.*');

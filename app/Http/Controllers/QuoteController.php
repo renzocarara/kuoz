@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 //
 use Auth;
+use App\Models\User;
 use App\Models\Quote;
 
 // use Illuminate\Support\Facades\Auth;
@@ -31,9 +32,9 @@ class QuoteController extends Controller
      */
     public function index()
     {
+
         // read all quotes in DB
-        return Quote::orderBy('created_at', 'DESC')->get();
-        // return Quote::orderBy('created_at', 'DESC')->paginate(5);
+        return [Quote::orderBy('created_at', 'DESC')->get(), User::select('id', 'name')->get()] ;
     }
 
     /**
@@ -43,9 +44,6 @@ class QuoteController extends Controller
      */
     public function index_UID($uid)
     {
-        // get user ID
-        $user_id = $uid;
-
         // read logged user quotes
         return Quote::orderBy('created_at', 'DESC')->where('user_id', $uid)->get();
     }

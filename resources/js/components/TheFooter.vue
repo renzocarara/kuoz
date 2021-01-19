@@ -1,5 +1,5 @@
 <template>
-  <v-footer absolute dark color="blue-grey" app>
+  <v-footer class="py-0" dark color="blue-grey" app>
     <span>
       <a
         class="link"
