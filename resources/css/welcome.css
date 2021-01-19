@@ -16,4 +16,7 @@ Style specific for welcome page
 
 .title-centered {
     align-self: center;
+    font-size: 40px;
+    padding: 0 20px;
+    text-align: center;
 }
