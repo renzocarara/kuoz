@@ -1,61 +1,77 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+<p align="center"><a href="https://kuoz.herokuapp.com" target="_blank"><img src="public/images/logo.png"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<p style="font-size:50px;" align="center">Kuoz<p>
 
-## About Laravel
+# Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This app is an exercise to experiment how Laravel Backend can communicate with Vue Frontend.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Vue makes axios calls to Laravel APIs that implement CRUD operations on a SQL Data Base (a PostgreSQL DB in this case).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+<img src="public/images/preview.png">
 
-## Learning Laravel
+# How to install it locally
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Download sources
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+From this page, click on the "Code" green button and select **Download ZIP**.\
+Unzip the downloaded file and from your command line move into the created directory where files
+has been placed.
 
-## Laravel Sponsors
+### Set Data Base parameters
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Copy the **".env.example"** in a file named **".env"**
 
-### Premium Partners
+```
+cp .env.example .env
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
+Edit the .env file and insert the following information:
 
-## Contributing
+> DB_DATABASE=your_db_name <br>
+> DB_USERNAME=your_username <br>
+> DB_PASSWORD=your_password
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+NOTE: you should have been created a postgres DB before.
 
-## Code of Conduct
+### Get Node Dependencies and compile
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Run the following command to install all needed dependencies:
 
-## Security Vulnerabilities
+```
+npm install
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+then compile:
+
+```
+npm run dev
+```
+
+### Get Composer dependencies
+
+```
+composer update
+```
+
+### Generate a Laravel key
+
+```
+php artisan key:generate
+```
+
+# Run application
+
+```
+php artisan serve
+```
+
+You should see indications about the localhost name where the application is running,
+something like the following:<br>
+
+> Starting Laravel development server: http://127.0.0.1:8000 > [Wed Jan 20 10:26:12 2021] PHP 7.4.3 Development Server (http://127.0.0.1:8000) started
+
+Open the indicated local address in your browser.
 
 ## License
 
