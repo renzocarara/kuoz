@@ -1,8 +1,8 @@
 <p align="center"><a href="https://kuoz.herokuapp.com" target="_blank"><img src="public/images/logo.png"></a></p>
 
-<p style="font-size:50px;" align="center">Kuoz<p>
+<p align="center"><span style="font-size:4em;" >Kuoz</span><p>
 
-# Overview
+# <span style="color:orchid">Overview</span>
 
 This app is an exercise to experiment how Laravel Backend can communicate with Vue Frontend.
 
@@ -10,7 +10,7 @@ Vue makes axios calls to Laravel APIs that implement CRUD operations on a SQL Da
 
 <img src="public/images/preview.png">
 
-# How to install it locally
+# <span style="color:orchid">How to install it locally</span>
 
 ### Download sources
 
@@ -60,7 +60,7 @@ composer update
 php artisan key:generate
 ```
 
-# Run application
+# <span style="color:orchid">Run application</span>
 
 ```
 php artisan serve
@@ -73,6 +73,6 @@ something like the following:<br>
 
 Open the indicated local address in your browser.
 
-## License
+# <span style="color:orchid">License</span>
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Kuoz is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
