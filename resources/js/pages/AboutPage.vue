@@ -2,8 +2,6 @@
     <div>
         <h1 class="text-center">About this app</h1>
         <v-card class="d-flex justify-center flex-column">
-            <v-card-title>Version</v-card-title>
-            <v-card-text> v.1.0.0 </v-card-text>
             <v-card-title>Purpose</v-card-title>
             <v-card-text>
                 This is an exercise combining
@@ -11,23 +9,23 @@
                     href="https://laravel.com/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    >Laravel
-                </a>
-                &nbsp;8 framework with a
+                    >Laravel</a
+                >
+                8 framework with a
                 <a
                     href="https://www.postgresql.org/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    >PostgreSQL
-                </a>
-                &nbsp;DB and a
+                    >PostgreSQL</a
+                >
+                DB and a
                 <a
                     href="https://vuejs.org/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    >Vue.js
-                </a>
-                &nbsp;frontend.
+                    >Vue.js</a
+                >
+                frontend.
             </v-card-text>
 
             <v-card-title>How it works</v-card-title>
@@ -55,6 +53,8 @@
                     <li>VUEX v3.6.0</li>
                 </ul>
             </v-card-text>
+            <v-card-title>Version</v-card-title>
+            <v-card-text> v.1.0.0 </v-card-text>
         </v-card>
     </div>
 </template>

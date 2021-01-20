@@ -1918,6 +1918,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "App",
@@ -2260,6 +2268,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "AboutPage" // nome di questo componente
 
@@ -2278,6 +2292,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2403,6 +2422,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_AddQuote__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/AddQuote */ "./resources/js/components/AddQuote.vue");
 /* harmony import */ var _components_ConfirmationDialog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/ConfirmationDialog */ "./resources/js/components/ConfirmationDialog.vue");
 /* harmony import */ var _const_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../const.js */ "./resources/js/const.js");
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2770,6 +2796,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "NotFound"
 });
@@ -3049,7 +3076,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.link[data-v-2a04c4de] {\n  text-decoration: none;\n  color: white;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.link[data-v-2a04c4de] {\n    text-decoration: none;\n    color: white;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -22231,7 +22258,7 @@ var render = function() {
           _c("v-card-title", { staticClass: "headline" }, [
             _vm._v(_vm._s(_vm.dialogTitleLabel) + ": "),
             _c("br"),
-            _vm._v("\n      " + _vm._s(_vm.dialogTitleText))
+            _vm._v("\n            " + _vm._s(_vm.dialogTitleText))
           ]),
           _vm._v(" "),
           _c("v-card-text", [_vm._v(_vm._s(_vm.dialogMessage))]),
@@ -22249,7 +22276,9 @@ var render = function() {
                 },
                 [
                   _vm._v(
-                    "\n        " + _vm._s(_vm.dialogConfirmBtn) + "\n      "
+                    "\n                " +
+                      _vm._s(_vm.dialogConfirmBtn) +
+                      "\n            "
                   )
                 ]
               ),
@@ -22262,7 +22291,9 @@ var render = function() {
                 },
                 [
                   _vm._v(
-                    "\n        " + _vm._s(_vm.dialogCancelBtn) + "\n      "
+                    "\n                " +
+                      _vm._s(_vm.dialogCancelBtn) +
+                      "\n            "
                   )
                 ]
               )
@@ -22316,7 +22347,9 @@ var render = function() {
           },
           [
             _vm._v(
-              "Renzo Carara - © " + _vm._s(new Date().getFullYear()) + "\n    "
+              "Renzo Carara - © " +
+                _vm._s(new Date().getFullYear()) +
+                "\n        "
             )
           ]
         )
@@ -22356,14 +22389,10 @@ var render = function() {
         "v-card",
         { staticClass: "d-flex justify-center flex-column" },
         [
-          _c("v-card-title", [_vm._v("Version")]),
-          _vm._v(" "),
-          _c("v-card-text", [_vm._v(" v.0.1.0 ")]),
-          _vm._v(" "),
           _c("v-card-title", [_vm._v("Purpose")]),
           _vm._v(" "),
           _c("v-card-text", [
-            _vm._v("\n      This is an exercise combining\n      "),
+            _vm._v("\n            This is an exercise combining\n            "),
             _c(
               "a",
               {
@@ -22373,9 +22402,9 @@ var render = function() {
                   rel: "noopener noreferrer"
                 }
               },
-              [_vm._v("Laravel\n      ")]
+              [_vm._v("Laravel")]
             ),
-            _vm._v("\n       8 framework with a\n      "),
+            _vm._v("\n            8 framework with a\n            "),
             _c(
               "a",
               {
@@ -22385,9 +22414,9 @@ var render = function() {
                   rel: "noopener noreferrer"
                 }
               },
-              [_vm._v("PostgreSQL\n      ")]
+              [_vm._v("PostgreSQL")]
             ),
-            _vm._v("\n       DB and a\n      "),
+            _vm._v("\n            DB and a\n            "),
             _c(
               "a",
               {
@@ -22397,16 +22426,16 @@ var render = function() {
                   rel: "noopener noreferrer"
                 }
               },
-              [_vm._v("Vue.js\n      ")]
+              [_vm._v("Vue.js")]
             ),
-            _vm._v("\n       frontend.\n    ")
+            _vm._v("\n            frontend.\n        ")
           ]),
           _vm._v(" "),
           _c("v-card-title", [_vm._v("How it works")]),
           _vm._v(" "),
           _c("v-card-text", [
             _vm._v(
-              "A minimal authentication system is implemented through\n      "
+              "A minimal authentication system is implemented through\n            "
             ),
             _c(
               "a",
@@ -22421,13 +22450,15 @@ var render = function() {
               [_vm._v("Laravel Breeze")]
             ),
             _vm._v(
-              ", it allows to register, login, and some more out-of-the box features\n      provided by Laravel. "
+              ", it allows to register, login, and some more out-of-the box\n            features provided by Laravel. "
             ),
             _c("br"),
-            _vm._v("\n      User should register to have access to the app. "),
+            _vm._v(
+              "\n            User should register to have access to the app. "
+            ),
             _c("br"),
             _vm._v(
-              "\n      Once logged in, user can see all the Quotes recorded in the DB. User can\n      insert new quotes or modify and delete existing ones.\n    "
+              "\n            Once logged in, user can see all the Quotes recorded in the DB.\n            User can insert new quotes or modify and delete existing ones.\n        "
             )
           ]),
           _vm._v(" "),
@@ -22445,7 +22476,11 @@ var render = function() {
               _vm._v(" "),
               _c("li", [_vm._v("VUEX v3.6.0")])
             ])
-          ])
+          ]),
+          _vm._v(" "),
+          _c("v-card-title", [_vm._v("Version")]),
+          _vm._v(" "),
+          _c("v-card-text", [_vm._v(" v.1.0.0 ")])
         ],
         1
       )
@@ -22530,7 +22565,7 @@ var render = function() {
                   [
                     _vm._v("--"),
                     _c("strong", [_vm._v(" " + _vm._s(quote.author) + " ")]),
-                    _vm._v("--\n\n        "),
+                    _vm._v("--\n\n                "),
                     _c("hr", { staticClass: "mt-3" }),
                     _vm._v(" "),
                     _c("v-spacer"),
@@ -22942,11 +22977,11 @@ var render = function() {
                 _vm._v(" "),
                 _c("h3", { staticClass: "text-center" }, [
                   _vm._v(
-                    "\n          Sorry, the page you are trying to get to never existed in this\n          reality, or has migrated to a parallel universe. "
+                    "\n                    Sorry, the page you are trying to get to never existed\n                    in this reality, or has migrated to a parallel universe.\n                    "
                   ),
                   _c("br"),
                   _vm._v(
-                    "\n          Try going back to home page and repeating your action. Or, contact\n          helpdesk for support.\n        "
+                    "\n                    Try going back to home page and repeating your action.\n                    Or, contact helpdesk for support.\n                "
                   )
                 ])
               ]),
