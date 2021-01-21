@@ -2345,7 +2345,9 @@ __webpack_require__.r(__webpack_exports__);
       quotes: [],
       users: [],
       isLoading: false,
-      noDataInDB: false
+      // circular progress flag
+      noDataInDB: false // no data found in DB flag
+
     };
   },
   mounted: function mounted() {
@@ -2388,9 +2390,8 @@ __webpack_require__.r(__webpack_exports__);
     username: function username(user_id) {
       // DESCRIPTION:
       // get user name from user id
-      console.log("user_id:", user_id); // search id in the array containing the user list
-      // if not found "undefined" is returned, otherwise an array with the searched element
-
+      // search id in the array containing the user list
+      // return an array with the searched element, if not found return "undefined"
       var userName = this.users.filter(function (obj) {
         return obj.id === user_id;
       });

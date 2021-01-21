@@ -51,9 +51,9 @@ export default {
         return {
             quotes: [],
             users: [],
-            isLoading: false,
+            isLoading: false, // circular progress flag
 
-            noDataInDB: false,
+            noDataInDB: false, // no data found in DB flag
         };
     },
     mounted() {
@@ -103,10 +103,9 @@ export default {
         username(user_id) {
             // DESCRIPTION:
             // get user name from user id
-            console.log("user_id:", user_id);
 
             // search id in the array containing the user list
-            // if not found "undefined" is returned, otherwise an array with the searched element
+            // return an array with the searched element, if not found return "undefined"
             let userName = this.users.filter((obj) => {
                 return obj.id === user_id;
             });

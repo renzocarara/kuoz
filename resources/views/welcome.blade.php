@@ -29,7 +29,7 @@
             @if (Route::has('login'))
                 <div class="access-panel">
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 underline">Dashboard</a>
+                        <a href="{{ url('/dashboard') }}" class="text-lg text-gray-700 underline">Dashboard</a>
                     @else
                         <a href="{{ route('login') }}" class="text-lg text-gray-700 underline">Login</a>
 
@@ -39,9 +39,13 @@
                     @endauth
                 </div>
             @endif
-            <h1 class="title-centered">Welcome on Kuoz</h1>
+            <div class="title-centered">
+                <h1 class="fz-48">Welcome on Kuoz</h1>
+                <h3 class="no-bottom-margin text-gray-700 text-lg">Please register or login to access the App</h3>
+                <h4 class="no-top-margin text-gray-500 text-sm">[{{ $registeredUsers }} registered users]</h4>
+            </div>
             
-            <div class="ml-4 text-center text-sm text-gray-500 sm:ml-0">
+            <div class="ml-4 text-center text-sm text-gray-600 sm:ml-0">
                 <!-- Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }}) -->
                 Renzo Carara - &copy; <?php echo date("Y"); ?>
             </div>

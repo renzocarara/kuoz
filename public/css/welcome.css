@@ -16,8 +16,17 @@ Style specific for welcome page
 
 .title-centered {
     align-self: center;
-    font-size: 40px;
     padding: 0 20px;
     text-align: center;
+}
+.fz-48 {
+    font-size: 48px;
+    line-height: 1;
+}
+.no-top-margin {
+    margin-top: 0;
+}
+.no-bottom-margin {
+    margin-bottom: 0;
 }
 
